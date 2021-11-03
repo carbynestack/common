@@ -1,0 +1,7 @@
+### IntelliJ IDEA
+.idea/*
+!/.idea/runConfigurations/
+*.iml
+
+### Maven
+target/
