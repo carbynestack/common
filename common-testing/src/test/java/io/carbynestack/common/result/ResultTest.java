@@ -17,19 +17,19 @@ import java.io.IOException;
 import static io.carbynestack.testing.result.ResultAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class ResultTest {
+class ResultTest {
     @SuppressWarnings("unused")
-    public static final Arguments OF = Arguments.of((ThrowingSupplier<Throwable, Integer>) () -> 12, "some");
+    private static final Arguments OF = Arguments.of((ThrowingSupplier<Throwable, Integer>) () -> 12, "some");
 
     @Test
-    public void of() {
+    void of() {
         int value = 12;
         Result<Integer, String> result = Result.of(() -> value, "some");
         assertThat(result).hasValue(value);
     }
 
     @Test
-    public void ofThrowsToFailure() {
+    void ofThrowsToFailure() {
         String reason = "some";
         Result<Integer, String> result = Result.of(() -> {
             throw new IOException();
@@ -39,7 +39,7 @@ public class ResultTest {
 
     @ParameterizedTest
     @NullableParamSource("OF")
-    public void ofNullPointerException(ThrowingSupplier<Throwable, Integer> supplier, String reason) {
+    void ofNullPointerException(ThrowingSupplier<Throwable, Integer> supplier, String reason) {
         assertThatThrownBy(() -> Result.of(supplier, reason))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
