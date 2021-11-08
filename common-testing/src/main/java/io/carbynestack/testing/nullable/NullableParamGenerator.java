@@ -54,7 +54,9 @@ public class NullableParamGenerator implements ArgumentsProvider, AnnotationCons
      */
     private Optional<Field> getField(Class<?> clazz) {
         try {
-            return Optional.of(clazz.getDeclaredField(fieldName));
+            Field field = clazz.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return Optional.of(field);
         } catch (Exception e) {
             return Optional.empty();
         }
