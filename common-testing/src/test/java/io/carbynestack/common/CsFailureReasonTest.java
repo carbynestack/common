@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import static io.carbynestack.testing.result.ResultAssert.assertThat;
 
-public class CsFailureReasonTest {
+class CsFailureReasonTest {
     @Test
-    public void toFailure() {
+    void toFailure() {
         assertThat(new TestReason().toFailure()).isFailure();
     }
 
