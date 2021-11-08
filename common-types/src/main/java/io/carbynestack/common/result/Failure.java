@@ -26,12 +26,29 @@ import static java.util.Objects.requireNonNull;
  * @since 0.1.0
  */
 public final class Failure<S, F> implements Result<S, F> {
+    /**
+     * The failure reason.
+     *
+     * @since 0.1.0
+     */
     private final F reason;
 
+    /**
+     * Constructs a {@code Failure} for a given reason.
+     *
+     * @param reason the failure reason
+     * @since 0.1.0
+     */
     public Failure(F reason) {
         this.reason = reason;
     }
 
+    /**
+     * Returns the failure reason.
+     *
+     * @return the failure reason
+     * @since 0.1.0
+     */
     public F reason() {
         return this.reason;
     }
