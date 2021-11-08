@@ -21,15 +21,15 @@ import static java.util.function.Function.identity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class SuccessTest {
+class SuccessTest {
     @SuppressWarnings("unused")
-    public static final Arguments FOLD = Arguments.of(identity(), identity());
+    private static final Arguments FOLD = Arguments.of(identity(), identity());
 
-    public final int value = 12;
-    public final Result<Integer, Integer> result = new Success<>(value);
+    private final int value = 12;
+    private final Result<Integer, Integer> result = new Success<>(value);
 
     @Test
-    public void isSuccess() {
+    void isSuccess() {
         assertThat(result).isInstanceOf(Result.class);
         assertThat(result.isSuccess()).isTrue();
         assertThat(result).isSuccess();
@@ -37,59 +37,59 @@ public class SuccessTest {
     }
 
     @Test
-    public void value() {
+    void value() {
         assertThat(result).hasValue(value);
     }
 
     @Test
-    public void map() {
+    void map() {
         assertThat(result.map(v -> v * 2)).hasValue(24);
     }
 
     @Test
-    public void mapNullPointerException() {
+    void mapNullPointerException() {
         assertThatThrownBy(() -> result.map(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void mapAndTransformType() {
+    void mapAndTransformType() {
         assertThat(result.map(v -> String.format("%s * 2 -> %s", v, v * 2)))
                 .hasValue("12 * 2 -> 24");
     }
 
     @Test
-    public void peek() {
+    void peek() {
         AtomicInteger output = new AtomicInteger(-1);
         result.peek(output::set);
         assertThat(output).hasValue(value);
     }
 
     @Test
-    public void peekNullPointerException() {
+    void peekNullPointerException() {
         assertThatThrownBy(() -> result.peek(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void recover() {
+    void recover() {
         assertThat(result.recover(identity())).hasValue(value);
     }
 
     @Test
-    public void recoverNullPointerException() {
+    void recoverNullPointerException() {
         assertThatThrownBy(() -> result.recover(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void flatMap() {
+    void flatMap() {
         assertThat(result.flatMap(v -> new Success<>(v * 2))).hasValue(24);
         assertThat(result.flatMap(v -> new Failure<>(v + 9))).hasReason(21);
     }
 
     @Test
-    public void flatMapNullPointerException() {
+    void flatMapNullPointerException() {
         assertThatThrownBy(() -> result.flatMap(null))
                 .isExactlyInstanceOf(NullPointerException.class);
         assertThatThrownBy(() -> result.flatMap(v -> null))
@@ -97,48 +97,48 @@ public class SuccessTest {
     }
 
     @Test
-    public void fold() {
+    void fold() {
         assertThat(result.<Integer>fold(r -> r + 9, v -> v * 2)).isEqualTo(24);
     }
 
     @ParameterizedTest
     @NullableParamSource("FOLD")
-    public void foldNullPointerException(Function<? super Integer, ? super Integer> failureFunction,
-                                         Function<? super Integer, ? super Integer> successFunction) {
+    void foldNullPointerException(Function<? super Integer, ? super Integer> failureFunction,
+                                  Function<? super Integer, ? super Integer> successFunction) {
         assertThatThrownBy(() -> result.fold(failureFunction, successFunction))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void filter() {
+    void filter() {
         assertThat(result.filter(Predicate.isEqual(value), 21)).hasValue(value);
         assertThat(result.filter(v -> !Objects.equals(v, value), 21)).hasReason(21);
     }
 
     @Test
-    public void filterNullPointerException() {
+    void filterNullPointerException() {
         assertThatThrownBy(() -> result.filter(null, null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void or() {
+    void or() {
         assertThat(result.or(() -> new Success<>(24))).hasValue(value);
     }
 
     @Test
-    public void orNullPointerException() {
+    void orNullPointerException() {
         assertThatThrownBy(() -> result.or(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void toOptional() {
+    void toOptional() {
         assertThat(result.toOptional()).hasValue(value);
     }
 
     @Test
-    public void stream() {
+    void stream() {
         assertThat(result.stream()).containsExactly(value);
     }
 }
