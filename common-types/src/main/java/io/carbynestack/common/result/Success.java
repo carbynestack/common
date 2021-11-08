@@ -6,6 +6,9 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.common.Generated;
+
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -217,5 +220,28 @@ public final class Success<S, F> implements Result<S, F> {
     @Override
     public Stream<S> stream() {
         return Stream.of(this.value());
+    }
+
+    @Override
+    @Generated
+    public String toString() {
+        return "Success{" +
+                "value=" + value +
+                '}';
+    }
+
+    @Override
+    @Generated
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Success<?, ?> success = (Success<?, ?>) o;
+        return Objects.equals(value, success.value);
+    }
+
+    @Override
+    @Generated
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }
