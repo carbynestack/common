@@ -30,8 +30,13 @@ import java.util.stream.Stream;
  * @since 0.1.0
  */
 public class BlankStringProvider implements ArgumentsProvider {
+    /**
+     * The blank string key-value pairs as a map.
+     *
+     * @since 0.1.0
+     */
     private static final Map<String, String> STRINGS;
-
+    
     static {
         STRINGS = new HashMap<>();
         STRINGS.put("SPACE", "\u0020");
