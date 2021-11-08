@@ -36,7 +36,7 @@ public class BlankStringProvider implements ArgumentsProvider {
      * @since 0.1.0
      */
     private static final Map<String, String> STRINGS;
-    
+
     static {
         STRINGS = new HashMap<>();
         STRINGS.put("SPACE", "\u0020");

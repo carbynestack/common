@@ -16,9 +16,12 @@ import static io.carbynestack.testing.result.ResultAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class ResultAssertTest {
-    public final int value = 12, reason = 21;
-    public final String some = "some", none = "none";
-    public final Result<Integer, Integer> success = new Success<>(value), failure = new Failure<>(reason);
+    public final int value = 12;
+    public final int reason = 21;
+    public final String some = "some";
+    public final String none = "none";
+    public final Result<Integer, Integer> success = new Success<>(value);
+    public final Result<Integer, Integer> failure = new Failure<>(reason);
 
     @Test
     public void isSuccess() {
