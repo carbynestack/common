@@ -26,12 +26,29 @@ import static java.util.Objects.requireNonNull;
  * @since 0.1.0
  */
 public final class Success<S, F> implements Result<S, F> {
+    /**
+     * The success value.
+     *
+     * @since 0.1.0
+     */
     private final S value;
 
+    /**
+     * Constructs a {@code Success} for a given value.
+     *
+     * @param value the success value
+     * @since 0.1.0
+     */
     public Success(S value) {
         this.value = value;
     }
 
+    /**
+     * Returns the success value.
+     *
+     * @return the success value
+     * @since 0.1.0
+     */
     public S value() {
         return this.value;
     }
