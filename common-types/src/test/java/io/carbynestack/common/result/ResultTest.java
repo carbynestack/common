@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ResultTest {
     @Test
-    void example() {
+    void success() {
         var value = 12;
         var other = new Success<Integer, Integer>(value);
 
@@ -36,5 +36,24 @@ class ResultTest {
         assertThat(res.<Integer>fold(identity(), identity())).isEqualTo(value);
         assertThat(res.toOptional()).isPresent();
         assertThat(res.stream().toList()).containsExactly(value);
+    }
+
+    @Test
+    void failure() {
+        var res = Result.of(() -> 21, 21)
+                .map(v -> v * 2)
+                .peek(System.out::println)
+                .recover(r -> r)
+                .peek(System.out::println)
+                .flatMap(v -> new Failure<Integer, Integer>(v - 10))
+                .peek(System.out::println)
+                .filter(v -> v < 10, -1)
+                .or(() -> new Failure<>(-11));
+
+        assertThat(res.isSuccess()).isFalse();
+        assertThat(res.isFailure()).isTrue();
+        assertThat(res.<Integer>fold(identity(), identity())).isEqualTo(-11);
+        assertThat(res.toOptional()).isEmpty();
+        assertThat(res.stream().toList()).isEmpty();
     }
 }
