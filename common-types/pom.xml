@@ -42,6 +42,16 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/..</directory>
+                <includes>
+                    <include>LICENSE</include>
+                    <include>NOTICE.md</include>
+                </includes>
+            </resource>
+        </resources>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -126,16 +136,6 @@
                 <version>${maven-surefire-plugin.version}</version>
             </plugin>
         </plugins>
-
-        <resources>
-            <resource>
-                <directory>${project.basedir}/..</directory>
-                <includes>
-                    <include>LICENSE</include>
-                    <include>NOTICE.md</include>
-                </includes>
-            </resource>
-        </resources>
     </build>
 
 </project>

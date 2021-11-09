@@ -58,7 +58,37 @@
                     <include>NOTICE.md</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>3RD-PARTY-LICENSES</targetPath>
+                <directory>${project.basedir}/3RD-PARTY-LICENSES</directory>
+                <excludes>
+                    <exclude>module.name</exclude>
+                </excludes>
+            </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${maven-license-plugin.version}</version>
+                <configuration>
+                    <outputDirectory>${project.basedir}/3RD-PARTY-LICENSES</outputDirectory>
+                    <thirdPartyFilename>sbom.xml</thirdPartyFilename>
+                    <fileTemplate>${project.parent.basedir}/.github/templates/sbom.ftl</fileTemplate>
+                    <excludedScopes>test</excludedScopes>
+                    <sortArtifactByName>true</sortArtifactByName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 </project>
