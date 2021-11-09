@@ -29,7 +29,10 @@ class ResultTest {
                 .flatMap(v -> new Failure<Integer, Integer>(v - 10))
                 .peek(System.out::println)
                 .filter(v -> v > 10, -1)
-                .or(() -> other);
+                .or(() -> other)
+                .or(() -> new Failure<>(-11)
+                        .flatMap(v -> new Success<>((Integer) v)))
+                .filter(v -> v > 10, -1);
 
         assertThat(res.isSuccess()).isTrue();
         assertThat(res.isFailure()).isFalse();
@@ -53,6 +56,20 @@ class ResultTest {
         assertThat(res.isSuccess()).isFalse();
         assertThat(res.isFailure()).isTrue();
         assertThat(res.<Integer>fold(identity(), identity())).isEqualTo(-11);
+        assertThat(res.toOptional()).isEmpty();
+        assertThat(res.stream().toList()).isEmpty();
+    }
+
+    @Test
+    void result() {
+        var res = new Failure<Integer, Integer>(21)
+                .flatMap(Success::new)
+                .recover(r -> r)
+                .filter(v -> v < 5, -21);
+
+        assertThat(res.isSuccess()).isFalse();
+        assertThat(res.isFailure()).isTrue();
+        assertThat(res.<Integer>fold(identity(), identity())).isEqualTo(-21);
         assertThat(res.toOptional()).isEmpty();
         assertThat(res.stream().toList()).isEmpty();
     }
