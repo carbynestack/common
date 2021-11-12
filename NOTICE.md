@@ -8,3 +8,7 @@ file in the Carbyne Stack
 ## Contributors
 
 > **NOTE**: Please keep the following list of contributors sorted.
+
+### Robert Bosch GmbH
+
+- Greven David <fixed-term.David.Greven@de.bosch.com>
