@@ -152,6 +152,18 @@ public interface Result<S, F> {
     <N> Result<N, F> flatMap(Function<? super S, ? extends Result<? extends N, F>> function);
 
     /**
+     * Flattens the directly nested {@code Result} if available.
+     *
+     * @param <V> the new success value type
+     * @param <R> the new failure reason type
+     * @return a one level flattened {@code Result}
+     * @throws ClassCastException if the nested {@code Result} type parameters
+     *                            do not align with {@code V} and {@code R}
+     * @since 0.1.0
+     */
+    <V, R> Result<V, R> unsafeFlatten();
+
+    /**
      * If the {@code Result} is a {@link Failure}, the failure function is
      * applied to the {@link Failure#reason()}. Otherwise, the success
      * function is applied to the {@link Success#value()}.

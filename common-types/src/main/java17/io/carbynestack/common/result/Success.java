@@ -139,6 +139,23 @@ public record Success<S, F>(S value) implements Result<S, F> {
     /**
      * {@inheritDoc}
      *
+     * @param <V> the new success value type
+     * @param <R> the new failure reason type
+     * @return a one level flattened {@code Result}
+     * @throws ClassCastException if the nested {@code Result} type parameters
+     *                            do not align with {@code V} and {@code R}
+     * @version JDK 17
+     * @since 0.1.0
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <V, R> Result<V, R> unsafeFlatten() {
+        return (Result<V, R>) (value() instanceof Result nested ? nested : this);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param successFunction the success mapping function to apply to a
      *                        {@link Success#value()}
      * @param failureFunction the mapping function to apply to a

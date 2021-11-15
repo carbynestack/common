@@ -15,7 +15,7 @@ import io.carbynestack.common.result.Failure;
  * @see Failure
  * @since 0.1.0
  */
-public interface CsFailureReason {
+public interface CsFailureReason extends Describable {
     /**
      * A short summary of the failure reason description.
      *
@@ -23,6 +23,7 @@ public interface CsFailureReason {
      * @see #description()
      * @since 0.1.0
      */
+    @Override
     String synopsis();
 
     /**
@@ -32,6 +33,7 @@ public interface CsFailureReason {
      * @see #synopsis()
      * @since 0.1.0
      */
+    @Override
     String description();
 
     /**
