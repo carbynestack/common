@@ -68,7 +68,8 @@ class ResultTest {
     }
 
     private static final class FailureException extends Exception implements CsFailureReason {
-        private final String synopsis, description;
+        private final String synopsis;
+        private final String description;
 
         public FailureException(String synopsis, String description) {
             this.synopsis = synopsis;
