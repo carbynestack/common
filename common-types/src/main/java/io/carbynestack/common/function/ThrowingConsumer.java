@@ -6,24 +6,24 @@
  */
 package io.carbynestack.common.function;
 
-import java.util.function.Supplier;
+import java.util.function.Consumer;
 
 /**
- * Represents a throwing {@link Supplier} of results.
+ * Represents a throwing {@link Consumer} of values.
  *
- * @param <T> the type of results supplied by this supplier
- * @param <E> the type of throwable permitted by this supplier
+ * @param <T> the type of values consumed by this consumer
+ * @param <E> the type of throwable permitted by this consumer
  * @version JDK 8
  * @since 0.1.0
  */
 @FunctionalInterface
-public interface ThrowingSupplier<T, E extends Throwable> {
+public interface ThrowingConsumer<T, E extends Throwable> {
     /**
-     * Gets a result or throw a {@link Throwable} of type {@link E}.
+     * Performs this operation on the given argument.
      *
-     * @return a result
+     * @param t the input argument
      * @throws E a throwable
      * @since 0.1.0
      */
-    T get() throws E;
+    void accept(T t) throws E;
 }

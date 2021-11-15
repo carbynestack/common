@@ -6,7 +6,7 @@
  */
 package io.carbynestack.common.result;
 
-import io.carbynestack.common.function.ThrowingSupplier;
+import io.carbynestack.common.function.AnyThrowingSupplier;
 import io.carbynestack.testing.nullable.NullableParamSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ResultTest {
     @SuppressWarnings("unused")
-    private static final Arguments OF = Arguments.of((ThrowingSupplier<Throwable, Integer>) () -> 12, "some");
+    private static final Arguments OF = Arguments.of((AnyThrowingSupplier<Integer>) () -> 12, "some");
 
     @Test
     void of() {
@@ -39,7 +39,7 @@ class ResultTest {
 
     @ParameterizedTest
     @NullableParamSource("OF")
-    void ofNullPointerException(ThrowingSupplier<Throwable, Integer> supplier, String reason) {
+    void ofNullPointerException(AnyThrowingSupplier<Integer> supplier, String reason) {
         assertThatThrownBy(() -> Result.of(supplier, reason))
                 .isExactlyInstanceOf(NullPointerException.class);
     }

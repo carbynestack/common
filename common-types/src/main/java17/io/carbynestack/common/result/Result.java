@@ -6,6 +6,7 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.common.function.AnyThrowingSupplier;
 import io.carbynestack.common.function.ThrowingSupplier;
 
 import java.util.Optional;
@@ -29,19 +30,18 @@ import static java.util.Objects.requireNonNull;
  */
 public sealed interface Result<S, F> permits Failure, Success {
     /**
-     * Returns the {@link Success} value of the {@link ThrowingSupplier} or
-     * the supplied {@link Failure} reason if the supplier has thrown a
-     * {@link Throwable} of type {@link E}.
+     * Returns the {@link Success} value of the {@link AnyThrowingSupplier}
+     * or the supplied {@link Failure} reason if the supplier has thrown a
+     * {@link Throwable}.
      *
      * @param supplier the {@code Success} result supplier
      * @param reason   the {@code Failure} reason
-     * @param <E>      the type of throwable permitted by this supplier
      * @param <S>      the success value type
      * @param <F>      the failure reason type
-     * @return the supplied {@code Success} or {@code Failure} result
+     * @return the supplied {@code Success} or a {@code Failure} result
      * @since 0.1.0
      */
-    static <E extends Throwable, S, F> Result<S, F> of(ThrowingSupplier<E, S> supplier, F reason) {
+    static <S, F> Result<S, F> of(AnyThrowingSupplier<S> supplier, F reason) {
         requireNonNull(supplier);
         requireNonNull(reason);
         try {
@@ -150,10 +150,10 @@ public sealed interface Result<S, F> permits Failure, Success {
      * applied to the {@link Failure#reason()}. Otherwise, the success
      * function is applied to the {@link Success#value()}.
      *
-     * @param failureFunction the mapping function to apply to a
-     *                        {@link Failure#reason()}
      * @param successFunction the success mapping function to apply to a
      *                        {@link Success#value()}
+     * @param failureFunction the mapping function to apply to a
+     *                        {@link Failure#reason()}
      * @param <N>             the type of the value returned from the
      *                        mapping functions
      * @return the folded value of mapping either this {@link Success} value
@@ -165,7 +165,7 @@ public sealed interface Result<S, F> permits Failure, Success {
      * @see Success#value()
      * @since 0.1.0
      */
-    <N> N fold(Function<? super F, ? super N> failureFunction, Function<? super S, ? super N> successFunction);
+    <N> N fold(Function<? super S, ? super N> successFunction, Function<? super F, ? super N> failureFunction);
 
     /**
      * If the {@code Result} is a {@link Success}, and the value matches the
@@ -192,6 +192,14 @@ public sealed interface Result<S, F> permits Failure, Success {
      * @since 0.1.0
      */
     Result<S, F> or(Supplier<? extends Result<? extends S, F>> supplier);
+
+    /**
+     * Swaps the {@code Result} success value with the failure reason or vise versa.
+     *
+     * @return a {@code Result} with swapped content
+     * @since 0.1.0
+     */
+    Result<F, S> swap();
 
     /**
      * If the {@code Result} is a {@link Success}, returns an {@link Optional}

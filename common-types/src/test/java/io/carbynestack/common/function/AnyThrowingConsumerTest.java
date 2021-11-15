@@ -9,31 +9,27 @@ package io.carbynestack.common.function;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ThrowingSupplierTest {
+class AnyThrowingConsumerTest {
     @Test
-    void get() {
+    void accept() throws Throwable {
         var value = 12;
-        ThrowingSupplier<Integer, RuntimeException> supplier = () -> value;
-        assertThat(supplier.get()).isEqualTo(value);
+        var output = new AtomicInteger(-1);
+        AnyThrowingConsumer<Integer> consumer = output::set;
+        consumer.accept(value);
+        assertThat(output).hasValue(value);
     }
 
     @Test
-    void getCheckedException() throws IOException {
-        var value = 12;
-        ThrowingSupplier<Integer, IOException> supplier = () -> value;
-        assertThat(supplier.get()).isEqualTo(value);
-    }
-
-    @Test
-    void getThrowsException() {
-        ThrowingSupplier<Integer, IOException> supplier = () -> {
+    void acceptThrowsException() {
+        AnyThrowingConsumer<Integer> consumer = v -> {
             throw new IOException();
         };
-        assertThatThrownBy(supplier::get)
+        assertThatThrownBy(() -> consumer.accept(12))
                 .isExactlyInstanceOf(IOException.class);
     }
 }
