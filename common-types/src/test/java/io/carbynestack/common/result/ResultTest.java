@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static java.util.function.Function.identity;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,12 +81,24 @@ class ResultTest {
     @Test
     void of() {
         int value = 12;
+        FailureException reason = new FailureException();
         assertThat(Result.of(() -> value).isSuccess()).isTrue();
         assertThat(Result.of(() -> {
             throw new FailureException();
         }).isSuccess()).isFalse();
         assertThat(Result.of(() -> value, Collections.emptyMap(),
                 new FailureException()).isSuccess()).isTrue();
+        assertThat(Result.of(() -> {
+            throw new IOException();
+        }, Collections.emptyMap(), reason).isFailure()).isFalse();
+        Map<Class<? extends Throwable>, FailureException> reasons = new HashMap<>();
+        reasons.put(IOException.class, reason);
+        reasons.put(IllegalArgumentException.class, reason);
+        reasons.put(Throwable.class, reason);
+        reasons.put(NumberFormatException.class, new FailureException("IO", "IOException"));
+        assertThat(Result.of(() -> {
+            throw new IOException(new IllegalArgumentException());
+        }, reasons, reason).isFailure()).isTrue();
     }
 
     private static final class FailureException extends Exception implements CsFailureReason {
