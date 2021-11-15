@@ -6,7 +6,6 @@
  */
 package io.carbynestack.common.result;
 
-import io.carbynestack.common.function.ThrowingSupplier;
 import io.carbynestack.testing.nullable.NullableParamSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
