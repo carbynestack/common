@@ -132,10 +132,10 @@ class SuccessTest {
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
-    @Test
+    /*@Test
     void swap() {
         assertThat(result.swap()).hasReason(value);
-    }
+    }*/
 
     @Test
     void toOptional() {
