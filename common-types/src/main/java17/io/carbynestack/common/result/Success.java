@@ -114,10 +114,10 @@ public record Success<S, F>(S value) implements Result<S, F> {
     /**
      * {@inheritDoc}
      *
-     * @param failureFunction the mapping function to apply to a
-     *                        {@link Failure#reason()}
      * @param successFunction the success mapping function to apply to a
      *                        {@link Success#value()}
+     * @param failureFunction the mapping function to apply to a
+     *                        {@link Failure#reason()}
      * @param <N>             the type of the value returned from the
      *                        mapping functions
      * @return the folded value of mapping this {@link Success} value
@@ -131,7 +131,7 @@ public record Success<S, F>(S value) implements Result<S, F> {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public <N> N fold(Function<? super F, ? super N> failureFunction, Function<? super S, ? super N> successFunction) {
+    public <N> N fold(Function<? super S, ? super N> successFunction, Function<? super F, ? super N> failureFunction) {
         requireNonNull(failureFunction);
         return (N) successFunction.apply(this.value());
     }
