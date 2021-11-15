@@ -208,10 +208,10 @@ public sealed interface Result<S, F> permits Failure, Success {
      * applied to the {@link Failure#reason()}. Otherwise, the success
      * function is applied to the {@link Success#value()}.
      *
-     * @param failureFunction the mapping function to apply to a
-     *                        {@link Failure#reason()}
      * @param successFunction the success mapping function to apply to a
      *                        {@link Success#value()}
+     * @param failureFunction the mapping function to apply to a
+     *                        {@link Failure#reason()}
      * @param <N>             the type of the value returned from the
      *                        mapping functions
      * @return the folded value of mapping either this {@link Success} value
@@ -223,7 +223,7 @@ public sealed interface Result<S, F> permits Failure, Success {
      * @see Success#value()
      * @since 0.1.0
      */
-    <N> N fold(Function<? super F, ? super N> failureFunction, Function<? super S, ? super N> successFunction);
+    <N> N fold(Function<? super S, ? super N> successFunction, Function<? super F, ? super N> failureFunction);
 
     /**
      * If the {@code Result} is a {@link Success}, and the value matches the
@@ -250,6 +250,14 @@ public sealed interface Result<S, F> permits Failure, Success {
      * @since 0.1.0
      */
     Result<S, F> or(Supplier<? extends Result<? extends S, F>> supplier);
+
+    /**
+     * Swaps the {@code Result} success value with the failure reason or vise versa.
+     *
+     * @return a {@code Result} with swapped content
+     * @since 0.1.0
+     */
+    Result<F, S> swap();
 
     /**
      * If the {@code Result} is a {@link Success}, returns an {@link Optional}

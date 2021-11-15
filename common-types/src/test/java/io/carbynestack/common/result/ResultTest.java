@@ -80,7 +80,7 @@ class ResultTest {
 
     @Test
     void of() {
-        int value = 12;
+        var value = 12;
         FailureException reason = new FailureException();
         assertThat(Result.of(() -> value).isSuccess()).isTrue();
         assertThat(Result.of(() -> {
@@ -91,7 +91,7 @@ class ResultTest {
         assertThat(Result.of(() -> {
             throw new IOException();
         }, Collections.emptyMap(), reason).isFailure()).isTrue();
-        Map<Class<? extends Throwable>, FailureException> reasons = new HashMap<>();
+        var reasons = new HashMap<Class<? extends Throwable>, FailureException>();
         reasons.put(IOException.class, reason);
         reasons.put(IllegalArgumentException.class, reason);
         reasons.put(Throwable.class, reason);
@@ -100,9 +100,20 @@ class ResultTest {
             throw new IOException(new IllegalArgumentException());
         }, reasons, reason).isFailure()).isTrue();
     }
+  
+    @Test
+    void swap() {
+        var value = 12;
+        var res = new Success<Integer, Integer>(value);
+
+        assertThat(res.<Integer>fold(identity(), r -> -1)).isEqualTo(value);
+        assertThat(res.swap().<Integer>fold(identity(), r -> -1)).isEqualTo(-1);
+        assertThat(res.swap().swap().<Integer>fold(identity(), r -> -1)).isEqualTo(value);
+    }
 
     private static final class FailureException extends Exception implements CsFailureReason {
-        private final String synopsis, description;
+        private final String synopsis;
+        private final String description;
 
         public FailureException(String synopsis, String description) {
             this.synopsis = synopsis;
