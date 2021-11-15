@@ -84,6 +84,26 @@ class ResultTest {
     }
   
     @Test
+    void unsafeFlatten() {
+        var value = 12;
+        var reason = 21;
+
+        assertThat(new Success<>(new Success<>(value)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(value);
+        assertThat(new Success<>(new Failure<>(reason)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(reason);
+        assertThat(new Success<>(value).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(value);
+
+        assertThat(new Failure<>(new Failure<>(reason)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(reason);
+        assertThat(new Failure<>(new Success<>(value)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(value);
+        assertThat(new Failure<>(reason).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(reason);
+    }
+
+    @Test
     void swap() {
         var value = 12;
         var res = new Success<Integer, Integer>(value);
