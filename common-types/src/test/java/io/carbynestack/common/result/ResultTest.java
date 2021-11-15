@@ -78,8 +78,8 @@ class ResultTest {
     void swap() {
         var value = 12;
         var res = new Success<Integer, Integer>(value);
-        assertThat(res.<Integer>fold(r -> -1, identity())).isEqualTo(value);
-        assertThat(res.swap().<Integer>fold(r -> -1, identity())).isEqualTo(-1);
-        assertThat(res.swap().swap().<Integer>fold(r -> -1, identity())).isEqualTo(value);
+        assertThat(res.<Integer>fold(identity(), r -> -1)).isEqualTo(value);
+        assertThat(res.swap().<Integer>fold(identity(), r -> -1)).isEqualTo(-1);
+        assertThat(res.swap().swap().<Integer>fold(identity(), r -> -1)).isEqualTo(value);
     }
 }
