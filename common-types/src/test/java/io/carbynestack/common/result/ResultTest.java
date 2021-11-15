@@ -81,6 +81,7 @@ class ResultTest {
                 .tryPeek(v -> {
                     throw new IOException();
                 }, -1)
+                .tryPeek(System.out::println, -1)
                 .isFailure()).isTrue();
     }
 }
