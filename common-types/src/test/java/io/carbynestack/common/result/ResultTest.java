@@ -6,6 +6,7 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.common.CsFailureReason;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -72,5 +73,36 @@ class ResultTest {
         assertThat(res.<Integer>fold(identity(), identity())).isEqualTo(-21);
         assertThat(res.toOptional()).isEmpty();
         assertThat(res.stream().toList()).isEmpty();
+    }
+
+    @Test
+    void of() {
+        assertThat(Result.of(() -> 12).isSuccess()).isTrue();
+        assertThat(Result.of(() -> {
+            throw new FailureException();
+        }).isSuccess()).isFalse();
+    }
+
+    private static final class FailureException extends Exception implements CsFailureReason {
+        private final String synopsis, description;
+
+        public FailureException(String synopsis, String description) {
+            this.synopsis = synopsis;
+            this.description = description;
+        }
+
+        public FailureException() {
+            this("synopsis", "description");
+        }
+
+        @Override
+        public String synopsis() {
+            return synopsis;
+        }
+
+        @Override
+        public String description() {
+            return description;
+        }
     }
 }
