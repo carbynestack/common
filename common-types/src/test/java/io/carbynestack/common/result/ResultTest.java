@@ -73,4 +73,14 @@ class ResultTest {
         assertThat(res.toOptional()).isEmpty();
         assertThat(res.stream().toList()).isEmpty();
     }
+
+    @Test
+    void tryPeek() {
+        assertThat(new Success<>(12)
+                .tryPeek(System.out::println, -1)
+                .tryPeek(v -> {
+                    throw new IOException();
+                }, -1)
+                .isFailure()).isTrue();
+    }
 }
