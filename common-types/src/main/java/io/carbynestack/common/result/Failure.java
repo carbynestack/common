@@ -7,6 +7,7 @@
 package io.carbynestack.common.result;
 
 import io.carbynestack.common.Generated;
+import io.carbynestack.common.function.AnyThrowingConsumer;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -100,6 +101,24 @@ public final class Failure<S, F> implements Result<S, F> {
      */
     @Override
     public Result<S, F> peek(Consumer<? super S> consumer) {
+        requireNonNull(consumer);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param consumer the consumer of {@link Success#value()}
+     * @param reason   the failure reason in case of the consumer throwing
+     *                 a {@code Throwable}
+     * @return {@code this}
+     * @throws NullPointerException if the consumer is {@code null}
+     * @version JDK 8
+     * @see #map(Function)
+     * @since 0.1.0
+     */
+    @Override
+    public Result<S, F> tryPeek(AnyThrowingConsumer<? super S> consumer, F reason) {
         requireNonNull(consumer);
         return this;
     }
