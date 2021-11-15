@@ -94,6 +94,27 @@ class FailureTest {
     }
 
     @Test
+    void unsafeFlattenNestedFailure() {
+        int reason = 21;
+        Result<Integer, Result<Integer, Integer>> res = new Failure<>(new Failure<>(reason));
+        assertThat(res.unsafeFlatten()).hasReason(reason);
+    }
+
+    @Test
+    void unsafeFlattenSuccessNestedInFailure() {
+        int value = 12;
+        Result<Integer, Result<Integer, Integer>> res = new Failure<>(new Success<>(value));
+        assertThat(res.unsafeFlatten()).hasValue(value);
+    }
+
+    @Test
+    void unsafeFlattenNonNestedFailure() {
+        int reason = 21;
+        Result<Integer, Integer> res = new Failure<>(reason);
+        assertThat(res.unsafeFlatten()).hasReason(reason);
+    }
+
+    @Test
     void fold() {
         assertThat(result.<Integer>fold(r -> r + 9, v -> v * 2)).isEqualTo(30);
     }
