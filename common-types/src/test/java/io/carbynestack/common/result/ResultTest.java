@@ -10,6 +10,7 @@ import io.carbynestack.common.CsFailureReason;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Collections;
 
 import static java.util.function.Function.identity;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,10 +78,13 @@ class ResultTest {
 
     @Test
     void of() {
-        assertThat(Result.of(() -> 12).isSuccess()).isTrue();
+        int value = 12;
+        assertThat(Result.of(() -> value).isSuccess()).isTrue();
         assertThat(Result.of(() -> {
             throw new FailureException();
         }).isSuccess()).isFalse();
+        assertThat(Result.of(() -> value, Collections.emptyMap(),
+                new FailureException()).isSuccess()).isTrue();
     }
 
     private static final class FailureException extends Exception implements CsFailureReason {
