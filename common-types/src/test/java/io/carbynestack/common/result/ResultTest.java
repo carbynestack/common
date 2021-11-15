@@ -84,4 +84,14 @@ class ResultTest {
                 .tryPeek(System.out::println, -1)
                 .isFailure()).isTrue();
     }
+
+    @Test 
+    void swap() {
+        var value = 12;
+        var res = new Success<Integer, Integer>(value);
+
+        assertThat(res.<Integer>fold(identity(), r -> -1)).isEqualTo(value);
+        assertThat(res.swap().<Integer>fold(identity(), r -> -1)).isEqualTo(-1);
+        assertThat(res.swap().swap().<Integer>fold(identity(), r -> -1)).isEqualTo(value);
+    }
 }
