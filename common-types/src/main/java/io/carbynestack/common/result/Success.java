@@ -201,6 +201,17 @@ public final class Success<S, F> implements Result<S, F> {
     /**
      * {@inheritDoc}
      *
+     * @return a {@code Result} with swapped content
+     * @since 0.1.0
+     */
+    @Override
+    public Result<F, S> swap() {
+        return new Failure<>(this.value());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return an {@code Optional} with the {@link Success#value()}
      * @version JDK 8
      * @since 0.1.0

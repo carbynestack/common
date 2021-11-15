@@ -73,4 +73,13 @@ class ResultTest {
         assertThat(res.toOptional()).isEmpty();
         assertThat(res.stream().toList()).isEmpty();
     }
+
+    @Test
+    void swap() {
+        var value = 12;
+        var res = new Success<Integer, Integer>(value);
+        assertThat(res.<Integer>fold(r -> -1, identity())).isEqualTo(value);
+        assertThat(res.swap().<Integer>fold(r -> -1, identity())).isEqualTo(-1);
+        assertThat(res.swap().swap().<Integer>fold(r -> -1, identity())).isEqualTo(value);
+    }
 }

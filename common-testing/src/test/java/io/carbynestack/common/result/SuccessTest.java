@@ -133,6 +133,11 @@ class SuccessTest {
     }
 
     @Test
+    void swap() {
+        assertThat(result.swap()).hasReason(value);
+    }
+
+    @Test
     void toOptional() {
         assertThat(result.toOptional()).hasValue(value);
     }

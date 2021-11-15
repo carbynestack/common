@@ -132,6 +132,11 @@ class FailureTest {
     }
 
     @Test
+    void swap() {
+        assertThat(result.swap()).hasValue(reason);
+    }
+
+    @Test
     void toOptional() {
         assertThat(result.toOptional()).isEmpty();
     }

@@ -201,6 +201,17 @@ public final class Failure<S, F> implements Result<S, F> {
     /**
      * {@inheritDoc}
      *
+     * @return a {@code Result} with swapped content
+     * @since 0.1.0
+     */
+    @Override
+    public Result<F, S> swap() {
+        return new Success<>(this.reason());
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return an empty {@code Optional}
      * @version JDK 8
      * @since 0.1.0

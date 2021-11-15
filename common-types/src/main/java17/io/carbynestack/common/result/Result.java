@@ -182,6 +182,14 @@ public sealed interface Result<S, F> permits Failure, Success {
     Result<S, F> or(Supplier<? extends Result<? extends S, F>> supplier);
 
     /**
+     * Swaps the {@code Result} success value with the failure reason or vise versa.
+     *
+     * @return a {@code Result} with swapped content
+     * @since 0.1.0
+     */
+    Result<F, S> swap();
+
+    /**
      * If the {@code Result} is a {@link Success}, returns an {@link Optional}
      * for the {@link Success#value()}. Otherwise, an empty {@code Optional} is
      * returned.
