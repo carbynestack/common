@@ -73,4 +73,24 @@ class ResultTest {
         assertThat(res.toOptional()).isEmpty();
         assertThat(res.stream().toList()).isEmpty();
     }
+
+    @Test
+    void unsafeFlatten() {
+        int value = 12;
+        int reason = 21;
+
+        assertThat(new Success<>(new Success<>(value)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(value);
+        assertThat(new Success<>(new Failure<>(reason)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(reason);
+        assertThat(new Success<>(value).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(value);
+
+        assertThat(new Failure<>(new Failure<>(reason)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(reason);
+        assertThat(new Failure<>(new Success<>(value)).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(value);
+        assertThat(new Failure<>(reason).unsafeFlatten()
+                .<Integer>fold(identity(), identity())).isEqualTo(reason);
+    }
 }
