@@ -95,14 +95,14 @@ class FailureTest {
 
     @Test
     void fold() {
-        assertThat(result.<Integer>fold(r -> r + 9, v -> v * 2)).isEqualTo(30);
+        assertThat(result.<Integer>fold(v -> v * 2, r -> r + 9)).isEqualTo(30);
     }
 
     @ParameterizedTest
     @NullableParamSource("FOLD")
-    void foldNullPointerException(Function<? super Integer, ? super Integer> failureFunction,
-                                  Function<? super Integer, ? super Integer> successFunction) {
-        assertThatThrownBy(() -> result.fold(failureFunction, successFunction))
+    void foldNullPointerException(Function<? super Integer, ? super Integer> successFunction,
+                                  Function<? super Integer, ? super Integer> failureFunction) {
+        assertThatThrownBy(() -> result.fold(successFunction, failureFunction))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
