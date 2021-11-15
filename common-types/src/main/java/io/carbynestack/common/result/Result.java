@@ -10,6 +10,7 @@ import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.function.AnyThrowingSupplier;
 import io.carbynestack.common.function.ThrowingSupplier;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -18,6 +19,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.Optional.ofNullable;
 
 /**
  * Represents either a success value or a failure reason.
@@ -70,6 +72,52 @@ public interface Result<S, F> {
             return new Success<>(supplier.get());
         } catch (Throwable e) {
             return ((CsFailureReason) e).toFailure();
+        }
+    }
+
+    /**
+     * Returns the {@link Success} value of the {@link AnyThrowingSupplier}
+     * or the resolved {@link Failure} reason for a given {@link Throwable}
+     * class or the missing {@code Failure} reason if the resolving also
+     * fails.
+     *
+     * <p>The resolving process is performed in the following order where
+     * each step can return a lookup key for the reasons mapping to select
+     * the most narrow type associated with the cause:
+     * <ol>
+     *     <li>The {@code Throwable} cause class type is used as the
+     *     resolution key.</li>
+     *     <li>The {@code Throwable} class type is used as the key.</li>
+     *     <li>The assignability of the {@code Throwable} is used as
+     *     the resolution predicate.</li>
+     *     <li>All lookup attempts have failed and the missing reason is
+     *     returned instead.</li>
+     * </ol>
+     *
+     * @param supplier the {@code Success} or {@code Failure} result
+     *                 supplier
+     * @param reasons  the mapping of {@code Throwable} classes to failure
+     *                 reasons
+     * @param missing  the failure reason if no other reason was resolved
+     * @param <S>      the success value type
+     * @param <F>      the failure reason type
+     * @return the supplied {@code Success} or a {@code Failure} result
+     * @since 0.1.0
+     */
+    static <S, F> Result<S, F> of(AnyThrowingSupplier<S> supplier, Map<Class<? extends Throwable>, F> reasons, F missing) {
+        requireNonNull(supplier);
+        requireNonNull(reasons);
+        try {
+            return new Success<>(supplier.get());
+        } catch (Throwable thr) {
+            return new Failure<>(ofNullable(thr.getCause())
+                    .flatMap(cause -> ofNullable(reasons.get(cause.getClass())))
+                    .or(() -> ofNullable(reasons.get(thr.getClass())))
+                    .orElseGet(() -> reasons.entrySet().stream()
+                            .filter(entry -> entry.getKey().isAssignableFrom(thr.getClass()))
+                            .findFirst()
+                            .map(Map.Entry::getValue)
+                            .orElse(missing)));
         }
     }
 
