@@ -90,7 +90,7 @@ class ResultTest {
                 new FailureException()).isSuccess()).isTrue();
         assertThat(Result.of(() -> {
             throw new IOException();
-        }, Collections.emptyMap(), reason).isFailure()).isFalse();
+        }, Collections.emptyMap(), reason).isFailure()).isTrue();
         Map<Class<? extends Throwable>, FailureException> reasons = new HashMap<>();
         reasons.put(IOException.class, reason);
         reasons.put(IllegalArgumentException.class, reason);
