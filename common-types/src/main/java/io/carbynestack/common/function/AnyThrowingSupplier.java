@@ -6,24 +6,22 @@
  */
 package io.carbynestack.common.function;
 
-import java.util.function.Supplier;
-
 /**
- * Represents a throwing {@link Supplier} of results.
+ * Represents a {@link ThrowingSupplier} throwing any kind of {@link Throwable}.
  *
  * @param <T> the type of results supplied by this supplier
- * @param <E> the type of throwable permitted by this supplier
  * @version JDK 8
  * @since 0.1.0
  */
 @FunctionalInterface
-public interface ThrowingSupplier<T, E extends Throwable> {
+public interface AnyThrowingSupplier<T> extends ThrowingSupplier<T, Throwable> {
     /**
-     * Gets a result or throw a {@link Throwable} of type {@link E}.
+     * {@inheritDoc}
      *
      * @return a result
-     * @throws E a throwable
+     * @throws Throwable some throwable
      * @since 0.1.0
      */
-    T get() throws E;
+    @Override
+    T get() throws Throwable;
 }

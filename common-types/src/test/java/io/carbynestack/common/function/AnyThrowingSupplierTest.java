@@ -13,24 +13,17 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-class ThrowingSupplierTest {
+class AnyThrowingSupplierTest {
     @Test
-    void get() {
+    void get() throws Throwable {
         var value = 12;
-        ThrowingSupplier<Integer, RuntimeException> supplier = () -> value;
-        assertThat(supplier.get()).isEqualTo(value);
-    }
-
-    @Test
-    void getCheckedException() throws IOException {
-        var value = 12;
-        ThrowingSupplier<Integer, IOException> supplier = () -> value;
+        AnyThrowingSupplier<Integer> supplier = () -> value;
         assertThat(supplier.get()).isEqualTo(value);
     }
 
     @Test
     void getThrowsException() {
-        ThrowingSupplier<Integer, IOException> supplier = () -> {
+        AnyThrowingSupplier<Integer> supplier = () -> {
             throw new IOException();
         };
         assertThatThrownBy(supplier::get)

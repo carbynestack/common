@@ -19,7 +19,7 @@ class ResultTest {
         var value = 12;
         var other = new Success<Integer, Integer>(value);
 
-        var res = Result.<IOException, Integer, Integer>of(() -> {
+        var res = Result.<Integer, Integer>of(() -> {
                     throw new IOException();
                 }, 21)
                 .map(v -> v * 2)
