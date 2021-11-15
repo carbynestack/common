@@ -82,6 +82,16 @@ class ResultTest {
             throw new FailureException();
         }).isSuccess()).isFalse();
     }
+  
+    @Test
+    void swap() {
+        var value = 12;
+        var res = new Success<Integer, Integer>(value);
+ 
+        assertThat(res.<Integer>fold(identity(), r -> -1)).isEqualTo(value);
+        assertThat(res.swap().<Integer>fold(identity(), r -> -1)).isEqualTo(-1);
+        assertThat(res.swap().swap().<Integer>fold(identity(), r -> -1)).isEqualTo(value);
+    }
 
     private static final class FailureException extends Exception implements CsFailureReason {
         private final String synopsis;
