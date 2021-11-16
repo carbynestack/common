@@ -76,6 +76,17 @@ class ResultTest {
     }
 
     @Test
+    void tryPeek() {
+        assertThat(new Success<>(12)
+                .tryPeek(System.out::println, -1)
+                .tryPeek(v -> {
+                    throw new IOException();
+                }, -1)
+                .tryPeek(System.out::println, -1)
+                .isFailure()).isTrue();
+    }
+
+    @Test
     void of() {
         assertThat(Result.of(() -> 12).isSuccess()).isTrue();
         assertThat(Result.of(() -> {

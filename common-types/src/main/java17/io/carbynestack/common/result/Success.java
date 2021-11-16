@@ -6,6 +6,8 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.common.function.AnyThrowingConsumer;
+
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -73,6 +75,29 @@ public record Success<S, F>(S value) implements Result<S, F> {
     public Result<S, F> peek(Consumer<? super S> consumer) {
         consumer.accept(this.value());
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param consumer the consumer of {@link Success#value()}
+     * @param reason   the failure reason in case of the consumer throwing
+     *                 a {@code Throwable}
+     * @return {@code this}
+     * @throws NullPointerException if the consumer is {@code null}
+     * @version JDK 17
+     * @see #map(Function)
+     * @since 0.1.0
+     */
+    @Override
+    public Result<S, F> tryPeek(AnyThrowingConsumer<? super S> consumer, F reason) {
+        requireNonNull(consumer);
+        try {
+            consumer.accept(this.value());
+            return this;
+        } catch (Throwable throwable) {
+            return new Failure<>(reason);
+        }
     }
 
     /**

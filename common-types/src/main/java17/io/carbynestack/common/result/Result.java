@@ -7,6 +7,7 @@
 package io.carbynestack.common.result;
 
 import io.carbynestack.common.CsFailureReason;
+import io.carbynestack.common.function.AnyThrowingConsumer;
 import io.carbynestack.common.function.AnyThrowingSupplier;
 import io.carbynestack.common.function.ThrowingSupplier;
 
@@ -122,6 +123,24 @@ public sealed interface Result<S, F> permits Failure, Success {
      * @since 0.1.0
      */
     Result<S, F> peek(Consumer<? super S> consumer);
+
+    /**
+     * If the {@code Result} is a {@link Success}, invokes the provided
+     * consumer with the {@link Success#value()}. Otherwise, the
+     * {@link Failure} is returned.
+     *
+     * <p>In case the consumer throws a {@link Throwable} the failure reason
+     * is returned as a {@code Failure}.<br>
+     *
+     * @param consumer the consumer of {@link Success#value()}
+     * @param reason   the failure reason in case of the consumer throwing
+     *                 a {@code Throwable}
+     * @return {@code this}
+     * @throws NullPointerException if the consumer is {@code null}
+     * @see #map(Function)
+     * @since 0.1.0
+     */
+    Result<S, F> tryPeek(AnyThrowingConsumer<? super S> consumer, F reason);
 
     /**
      * If the {@code Result} is a {@link Failure}, returns the result of

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -68,6 +69,29 @@ class SuccessTest {
     @Test
     void peekNullPointerException() {
         assertThatThrownBy(() -> result.peek(null))
+                .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void tryPeek() {
+        AtomicInteger output = new AtomicInteger(-1);
+        result.tryPeek(output::set, -11);
+        assertThat(output).hasValue(value);
+    }
+
+    @Test
+    void tryPeekWithException() {
+        int reason = -11;
+        Result<Integer, Integer> res = result.tryPeek(v -> {
+            throw new IOException("-11");
+        }, reason);
+        assertThat(res).isFailure();
+        assertThat(res).hasReason(reason);
+    }
+
+    @Test
+    void tryPeekNullPointerException() {
+        assertThatThrownBy(() -> result.tryPeek(null, -11))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
