@@ -6,6 +6,7 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.function.AnyThrowingSupplier;
 import io.carbynestack.testing.nullable.NullableParamSource;
 import org.junit.jupiter.api.Test;
@@ -42,5 +43,51 @@ class ResultTest {
     void ofNullPointerException(AnyThrowingSupplier<Integer> supplier, String reason) {
         assertThatThrownBy(() -> Result.of(supplier, reason))
                 .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void ofWithCsFailureReason() {
+        int value = 12;
+        Result<Integer, ? extends Throwable> result = Result.of(() -> value);
+        assertThat(result).hasValue(value);
+    }
+
+    @Test
+    void ofWithCsFailureReasonToFailure() {
+        FailureException reason = new FailureException();
+        Result<Object, FailureException> result = Result.of(() -> {
+            throw reason;
+        });
+        assertThat(result).hasReason(reason);
+    }
+
+    @Test
+    void ofWithCsFailureReasonNullPointerException() {
+        assertThatThrownBy(() -> Result.of(null))
+                .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    private static final class FailureException extends Exception implements CsFailureReason {
+        private final String synopsis;
+        private final String description;
+
+        public FailureException(String synopsis, String description) {
+            this.synopsis = synopsis;
+            this.description = description;
+        }
+
+        public FailureException() {
+            this("synopsis", "description");
+        }
+
+        @Override
+        public String synopsis() {
+            return synopsis;
+        }
+
+        @Override
+        public String description() {
+            return description;
+        }
     }
 }

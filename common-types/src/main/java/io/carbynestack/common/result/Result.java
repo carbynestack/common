@@ -6,8 +6,10 @@
  */
 package io.carbynestack.common.result;
 
+import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.function.AnyThrowingConsumer;
 import io.carbynestack.common.function.AnyThrowingSupplier;
+import io.carbynestack.common.function.ThrowingSupplier;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -48,6 +50,27 @@ public interface Result<S, F> {
             return new Success<>(supplier.get());
         } catch (Throwable e) {
             return new Failure<>(reason);
+        }
+    }
+
+    /**
+     * Returns the {@link Success} value of the {@link ThrowingSupplier}
+     * or the thrown object implementing the {@link CsFailureReason}
+     * interface as a {@link Failure}.
+     *
+     * @param supplier the {@code Success} or {@code Failure} result
+     *                 supplier
+     * @param <S>      the success value type
+     * @param <E>      the failure reason type
+     * @return the supplied {@code Success} or a {@code Failure} result
+     * @since 0.1.0
+     */
+    static <S, E extends Throwable & CsFailureReason> Result<S, E> of(ThrowingSupplier<S, E> supplier) {
+        requireNonNull(supplier);
+        try {
+            return new Success<>(supplier.get());
+        } catch (Throwable e) {
+            return ((CsFailureReason) e).toFailure();
         }
     }
 
