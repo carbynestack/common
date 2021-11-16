@@ -10,6 +10,8 @@ import io.carbynestack.common.CsFailureReason;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 
 import static java.util.function.Function.identity;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,10 +90,25 @@ class ResultTest {
 
     @Test
     void of() {
-        assertThat(Result.of(() -> 12).isSuccess()).isTrue();
+        var value = 12;
+        FailureException reason = new FailureException();
+        assertThat(Result.of(() -> value).isSuccess()).isTrue();
         assertThat(Result.of(() -> {
             throw new FailureException();
         }).isSuccess()).isFalse();
+        assertThat(Result.of(() -> value, Collections.emptyMap(),
+                new FailureException()).isSuccess()).isTrue();
+        assertThat(Result.of(() -> {
+            throw new IOException();
+        }, Collections.emptyMap(), reason).isFailure()).isTrue();
+        var reasons = new HashMap<Class<? extends Throwable>, FailureException>();
+        reasons.put(IOException.class, reason);
+        reasons.put(IllegalArgumentException.class, reason);
+        reasons.put(Throwable.class, reason);
+        reasons.put(NumberFormatException.class, new FailureException("IO", "IOException"));
+        assertThat(Result.of(() -> {
+            throw new IOException(new IllegalArgumentException());
+        }, reasons, reason).isFailure()).isTrue();
     }
   
     @Test
@@ -118,7 +135,7 @@ class ResultTest {
     void swap() {
         var value = 12;
         var res = new Success<Integer, Integer>(value);
- 
+
         assertThat(res.<Integer>fold(identity(), r -> -1)).isEqualTo(value);
         assertThat(res.swap().<Integer>fold(identity(), r -> -1)).isEqualTo(-1);
         assertThat(res.swap().swap().<Integer>fold(identity(), r -> -1)).isEqualTo(value);
