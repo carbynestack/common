@@ -59,6 +59,23 @@ class FailureTest {
     }
 
     @Test
+    void mapFailure() {
+        assertThat(result.mapFailure(r -> r * 2)).hasReason(reason * 2);
+    }
+
+    @Test
+    void mapFailureNullPointerException() {
+        assertThatThrownBy(() -> result.mapFailure(null))
+                .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void mapFailureAndTransformType() {
+        assertThat(result.mapFailure(r -> String.format("%s * 2 -> %s", r, r * 2)))
+                .hasReason("21 * 2 -> 42");
+    }
+
+    @Test
     void peek() {
         AtomicInteger output = new AtomicInteger(-1);
         result.peek(output::set);

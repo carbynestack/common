@@ -60,6 +60,23 @@ class SuccessTest {
     }
 
     @Test
+    public void mapFailure() {
+        assertThat(result.mapFailure(r -> r * 2)).hasValue(value);
+    }
+
+    @Test
+    public void mapFailureNullPointerException() {
+        assertThatThrownBy(() -> result.mapFailure(null))
+                .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    public void mapFailureAndTransformType() {
+        assertThat(result.mapFailure(r -> String.format("%s * 2 -> %s", r, r * 2)))
+                .hasValue(value);
+    }
+
+    @Test
     void peek() {
         AtomicInteger output = new AtomicInteger(-1);
         result.peek(output::set);
