@@ -101,6 +101,7 @@ public final class Failure<S, F> implements Result<S, F> {
      * @return the {@code Result} of mapping the given function to the value
      * from this {@link Success} or this {@link Failure}
      * @throws NullPointerException if the mapping function is {@code null}
+     * @version JDK 8
      * @see #recover(Function)
      * @see #peek(Consumer)
      * @since 0.2.0
