@@ -16,6 +16,7 @@ import static java.util.Optional.ofNullable;
 /**
  * Represents the Carbyne Stack throwable failure base type.
  *
+ * @version JDK 8
  * @see Failure
  * @see CsFailureReason
  * @since 0.2.0
