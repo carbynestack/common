@@ -59,24 +59,24 @@ class FailureTest {
     }
 
     @Test
-    public void tryMap() {
+    void tryMap() {
         assertThat(result.tryMap(v -> v * 2, reason * 2)).hasReason(reason);
     }
 
     @Test
-    public void tryMapNullPointerException() {
+    void tryMapNullPointerException() {
         assertThatThrownBy(() -> result.tryMap(null, reason * 2))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    public void tryMapAndTransformType() {
+    void tryMapAndTransformType() {
         assertThat(result.tryMap(v -> String.format("%s * 2 -> %s", v, v * 2),
                 reason * 2)).hasReason(reason);
     }
 
     @Test
-    public void tryMapWithException() {
+    void tryMapWithException() {
         assertThat(result.tryMap(v -> {
             throw new IOException("-11");
         }, reason * 2)).hasReason(reason);

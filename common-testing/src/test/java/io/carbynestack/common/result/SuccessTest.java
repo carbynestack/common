@@ -60,7 +60,7 @@ class SuccessTest {
     }
 
     @Test
-    public void tryMap() {
+    void tryMap() {
         assertThat(result.tryMap(v -> v * 2, -11)).hasValue(24);
     }
 
@@ -71,13 +71,13 @@ class SuccessTest {
     }
 
     @Test
-    public void tryMapAndTransformType() {
+    void tryMapAndTransformType() {
         assertThat(result.tryMap(v -> String.format("%s * 2 -> %s", v, v * 2),
                 -11)).hasValue("12 * 2 -> 24");
     }
 
     @Test
-    public void tryMapWithException() {
+    void tryMapWithException() {
         int reason = -11;
         assertThat(result.tryMap(v -> {
             throw new IOException("-11");
