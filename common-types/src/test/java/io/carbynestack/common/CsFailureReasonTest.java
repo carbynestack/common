@@ -12,13 +12,30 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CsFailureReasonTest {
+    private static final String SYNOPSIS = "synopsis";
+    private final CsFailureReason reason = new TestReason(SYNOPSIS);
+
     @Test
-    void toFailure() {
-        assertThat(new TestReason("synopsis", "description").toFailure())
-                .isExactlyInstanceOf(Failure.class);
+    void description() {
+        assertThat(reason.description()).isEqualTo(SYNOPSIS);
     }
 
-    private static final record TestReason(String synopsis, String description) implements CsFailureReason {
+    @Test
+    void stackTrace() {
+        assertThat(reason.stackTrace()).isEmpty();
+    }
+
+    @Test
+    void reportIssue() {
+        assertThat(reason.reportIssue()).isFalse();
+    }
+
+    @Test
+    void toFailure() {
+        assertThat(new TestReason("synopsis").toFailure()).isExactlyInstanceOf(Failure.class);
+    }
+
+    record TestReason(String synopsis) implements CsFailureReason {
     }
 }
 
