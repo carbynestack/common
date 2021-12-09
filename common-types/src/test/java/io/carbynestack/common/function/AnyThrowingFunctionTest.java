@@ -13,7 +13,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class AnyThrowingFunctionTest {
+class AnyThrowingFunctionTest {
     @Test
     void apply() throws Throwable {
         var value = 12;
