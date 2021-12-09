@@ -64,6 +64,32 @@ public record Success<S, F>(S value) implements Result<S, F> {
     /**
      * {@inheritDoc}
      *
+     * @param function the mapping function to apply to a {@link Success#value()}
+     * @param reason   the failure reason in case of the function throwing
+     *                 a {@code Throwable}
+     * @param <N>      the success type of the value returned from the mapping
+     *                 function
+     * @return the {@code Result} of mapping the given function to the value
+     * from this {@link Success} or this {@link Failure}
+     * @throws NullPointerException if the mapping function is {@code null}
+     * @see #recover(Function)
+     * @see #peek(Consumer)
+     * @since 0.2.0
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <N> Result<N, F> tryMap(AnyThrowingFunction<? super S, ? super N> function, F reason) {
+        requireNonNull(function);
+        try {
+            return new Success<>((N) function.apply(this.value()));
+        } catch (Throwable throwable) {
+            return new Failure<>(reason);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param consumer the consumer of {@link Success#value()}
      * @return {@code this}
      * @throws NullPointerException if the consumer is {@code null}

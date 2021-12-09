@@ -111,14 +111,7 @@ public sealed interface Result<S, F> permits Failure, Success {
         try {
             return new Success<>(supplier.get());
         } catch (Throwable thr) {
-            return new Failure<>(ofNullable(thr.getCause())
-                    .flatMap(cause -> ofNullable(reasons.get(cause.getClass())))
-                    .or(() -> ofNullable(reasons.get(thr.getClass())))
-                    .orElseGet(() -> reasons.entrySet().stream()
-                            .filter(entry -> entry.getKey().isAssignableFrom(thr.getClass()))
-                            .findFirst()
-                            .map(Map.Entry::getValue)
-                            .orElse(missing)));
+            return new Failure<>(ofNullable(thr.getCause()).flatMap(cause -> ofNullable(reasons.get(cause.getClass()))).or(() -> ofNullable(reasons.get(thr.getClass()))).orElseGet(() -> reasons.entrySet().stream().filter(entry -> entry.getKey().isAssignableFrom(thr.getClass())).findFirst().map(Map.Entry::getValue).orElse(missing)));
         }
     }
 
@@ -159,6 +152,28 @@ public sealed interface Result<S, F> permits Failure, Success {
      */
     <N> Result<N, F> map(Function<? super S, ? super N> function);
 
+    /**
+     * If the {@code Result} is a {@link Success}, returns the result of
+     * applying the given mapping function to the {@link Success#value()}.
+     * Otherwise, a cast version of the {@link Failure} is returned.
+     *
+     * <p>In case the function throws a {@link Throwable} the failure reason
+     * is returned as a {@code Failure}.<br>
+     *
+     * @param function the mapping function to apply to a {@link Success#value()}
+     * @param reason   the failure reason in case of the function throwing
+     *                 a {@code Throwable}
+     * @param <N>      the success type of the value returned from the mapping
+     *                 function
+     * @return the {@code Result} of mapping the given function to the value
+     * from this {@link Success} or this {@link Failure}
+     * @throws NullPointerException if the mapping function is {@code null}
+     * @see #recover(Function)
+     * @see #peek(Consumer)
+     * @since 0.2.0
+     */
+    <N> Result<N, F> tryMap(AnyThrowingFunction<? super S, ? super N> function, F reason);
+    
     /**
      * If the {@code Result} is a {@link Success}, invokes the provided
      * consumer with the {@link Success#value()}. Otherwise, the
