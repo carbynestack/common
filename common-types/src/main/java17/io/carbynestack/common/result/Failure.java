@@ -63,6 +63,26 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     /**
      * {@inheritDoc}
      *
+     * @param function the mapping function to apply to a {@link Failure#reason()}
+     * @param <R>      the failure type of the value returned from the mapping
+     *                 function
+     * @return the {@code Result} of mapping the given function to the value
+     * from this {@link Failure} or this {@link Success}
+     * @throws NullPointerException if the mapping function is {@code null}
+     * @version JDK 17
+     * @see #map(Function)
+     * @see #recover(Function)
+     * @since 0.2.0
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public <R> Result<S, R> mapFailure(Function<? super F, ? super R> function) {
+        return new Failure<>((R) function.apply(this.reason()));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @param consumer the consumer of {@link Success#value()}
      * @return {@code this}
      * @throws NullPointerException if the consumer is {@code null}
