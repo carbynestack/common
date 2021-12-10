@@ -8,6 +8,8 @@ package io.carbynestack.common;
 
 import io.carbynestack.common.result.Failure;
 
+import java.util.Optional;
+
 /**
  * Represents the Carbyne Stack failure reason base type.
  *
@@ -34,7 +36,31 @@ public interface CsFailureReason extends Describable {
      * @since 0.1.0
      */
     @Override
-    String description();
+    default String description() {
+        return synopsis();
+    }
+
+    /**
+     * The failure stack trace.
+     *
+     * @return the stack trace as an {@link Optional}
+     * @since 0.2.0
+     */
+    default Optional<StackTraceElement[]> stackTrace() {
+        return Optional.empty();
+    }
+
+    /**
+     * Returns {@code true} if the failure should request
+     * the application to prompt the user to report the issue.
+     *
+     * @return {@code true} if the request should be triggered,
+     * otherwise {@code false}.
+     * @since 0.2.0
+     */
+    default boolean reportIssue() {
+        return false;
+    }
 
     /**
      * Converts this {@code CsFailureReason} into a {@link Failure}.
