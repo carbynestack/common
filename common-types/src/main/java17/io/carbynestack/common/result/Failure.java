@@ -7,6 +7,7 @@
 package io.carbynestack.common.result;
 
 import io.carbynestack.common.function.AnyThrowingConsumer;
+import io.carbynestack.common.function.AnyThrowingFunction;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -78,6 +79,28 @@ public record Failure<S, F>(F reason) implements Result<S, F> {
     @SuppressWarnings("unchecked")
     public <R> Result<S, R> mapFailure(Function<? super F, ? super R> function) {
         return new Failure<>((R) function.apply(this.reason()));
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param function the mapping function to apply to a {@link Success#value()}
+     * @param reason   the failure reason in case of the function throwing
+     *                 a {@code Throwable}
+     * @param <N>      the success type of the value returned from the mapping
+     *                 function
+     * @return the {@code Result} of mapping the given function to the value
+     * from this {@link Success} or this {@link Failure}
+     * @throws NullPointerException if the mapping function is {@code null}
+     * @version JDK 17
+     * @see #recover(Function)
+     * @see #peek(Consumer)
+     * @since 0.2.0
+     */
+    @Override
+    public <N> Result<N, F> tryMap(AnyThrowingFunction<? super S, ? super N> function, F reason) {
+        requireNonNull(function);
+        return new Failure<>(this.reason());
     }
 
     /**

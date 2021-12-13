@@ -68,11 +68,35 @@ class FailureTest {
         assertThatThrownBy(() -> result.mapFailure(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
+  
+    @Test
+    void tryMap() {
+        assertThat(result.tryMap(v -> v * 2, reason * 2)).hasReason(reason);
+    }
+
+    @Test
+    void tryMapNullPointerException() {
+        assertThatThrownBy(() -> result.tryMap(null, reason * 2))
+                .isExactlyInstanceOf(NullPointerException.class);
+    }
 
     @Test
     void mapFailureAndTransformType() {
         assertThat(result.mapFailure(r -> String.format("%s * 2 -> %s", r, r * 2)))
                 .hasReason("21 * 2 -> 42");
+    }
+    
+    @Test
+    void tryMapAndTransformType() {
+        assertThat(result.tryMap(v -> String.format("%s * 2 -> %s", v, v * 2),
+                reason * 2)).hasReason(reason);
+    }
+
+    @Test
+    void tryMapWithException() {
+        assertThat(result.tryMap(v -> {
+            throw new IOException("-11");
+        }, reason * 2)).hasReason(reason);
     }
 
     @Test
@@ -97,11 +121,9 @@ class FailureTest {
 
     @Test
     void tryPeekWithException() {
-        Result<Integer, Integer> res = result.tryPeek(v -> {
+        assertThat(result.tryPeek(v -> {
             throw new IOException("-11");
-        }, reason * 2);
-        assertThat(res).isFailure();
-        assertThat(res).hasReason(reason);
+        }, reason * 2)).hasReason(reason);
     }
 
     @Test

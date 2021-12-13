@@ -98,6 +98,17 @@ class ResultTest {
     }
 
     @Test
+    void tryMap() {
+        assertThat(new Success<>(12)
+                .tryMap(v -> v * 2, -11)
+                .<Integer>tryMap(v -> {
+                    throw new RuntimeException();
+                }, -21)
+                .tryMap(v -> v * 2, -11)
+                .isFailure()).isTrue();
+    }
+
+    @Test
     void of() {
         var value = 12;
         FailureException reason = new FailureException();
