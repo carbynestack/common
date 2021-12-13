@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * {@code BlankStringProvider} is an {@code ArgumentsProvider} responsible for
- * {@linkplain #provideArguments providing} a stream of named {@link Arguments}
+ * {@code EmptyOrBlankStringProvider} is an {@code ArgumentsProvider} responsible
+ * for {@linkplain #provideArguments providing} a stream of named {@link Arguments}
  * containing UTF-8 characters which valid in a blank string.
  *
  * @see ParameterizedTest
@@ -29,7 +29,7 @@ import java.util.stream.Stream;
  * @see AnnotationConsumer
  * @since 0.1.0
  */
-public class BlankStringProvider implements ArgumentsProvider {
+public class EmptyOrBlankStringProvider implements ArgumentsProvider {
     /**
      * The blank string key-value pairs as a map.
      *
@@ -39,6 +39,7 @@ public class BlankStringProvider implements ArgumentsProvider {
 
     static {
         STRINGS = new HashMap<>();
+        STRINGS.put("EMPTY", "");
         STRINGS.put("SPACE", "\u0020");
         STRINGS.put("EN QUAD", "\u2000");
         STRINGS.put("EM QUAD", "\u2001");
