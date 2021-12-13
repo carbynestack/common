@@ -82,7 +82,7 @@ class ResultTest {
         assertThat(new Success<>(12)
                 .mapFailure(Long.TYPE::cast)
                 .flatMap(v -> new Failure<Integer, Long>((long) v * 2))
-                .mapFailure(Integer.TYPE::cast)
+                .mapFailure(Long::intValue)
                 .isFailure()).isTrue();
     }
 
