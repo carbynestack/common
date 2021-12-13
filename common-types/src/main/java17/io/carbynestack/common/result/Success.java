@@ -7,6 +7,7 @@
 package io.carbynestack.common.result;
 
 import io.carbynestack.common.function.AnyThrowingConsumer;
+import io.carbynestack.common.function.AnyThrowingFunction;
 
 import java.util.Optional;
 import java.util.function.Consumer;

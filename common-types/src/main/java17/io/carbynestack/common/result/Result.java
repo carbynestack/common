@@ -9,6 +9,7 @@ package io.carbynestack.common.result;
 import io.carbynestack.common.CsFailureReason;
 import io.carbynestack.common.function.AnyThrowingConsumer;
 import io.carbynestack.common.function.AnyThrowingSupplier;
+import io.carbynestack.common.function.AnyThrowingFunction;
 import io.carbynestack.common.function.ThrowingSupplier;
 
 import java.util.Map;
