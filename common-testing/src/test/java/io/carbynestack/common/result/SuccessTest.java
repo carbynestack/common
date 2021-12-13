@@ -60,6 +60,31 @@ class SuccessTest {
     }
 
     @Test
+    void tryMap() {
+        assertThat(result.tryMap(v -> v * 2, -11)).hasValue(24);
+    }
+
+    @Test
+    void tryMapNullPointerException() {
+        assertThatThrownBy(() -> result.tryMap(null, -11))
+                .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void tryMapAndTransformType() {
+        assertThat(result.tryMap(v -> String.format("%s * 2 -> %s", v, v * 2),
+                -11)).hasValue("12 * 2 -> 24");
+    }
+
+    @Test
+    void tryMapWithException() {
+        int reason = -11;
+        assertThat(result.tryMap(v -> {
+            throw new IOException("-11");
+        }, reason)).hasReason(reason);
+    }
+
+    @Test
     void peek() {
         AtomicInteger output = new AtomicInteger(-1);
         result.peek(output::set);
@@ -82,11 +107,9 @@ class SuccessTest {
     @Test
     void tryPeekWithException() {
         int reason = -11;
-        Result<Integer, Integer> res = result.tryPeek(v -> {
+        assertThat(result.tryPeek(v -> {
             throw new IOException("-11");
-        }, reason);
-        assertThat(res).isFailure();
-        assertThat(res).hasReason(reason);
+        }, reason)).hasReason(reason);
     }
 
     @Test
