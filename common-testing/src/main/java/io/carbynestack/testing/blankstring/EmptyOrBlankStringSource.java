@@ -13,11 +13,11 @@ import java.lang.annotation.*;
 import java.util.stream.Stream;
 
 /**
- * {@code @BlankStringSource} is an {@link ArgumentsSource} for blank
- * string values.
+ * {@code @EmptyOrBlankStringSource} is an {@link ArgumentsSource} for
+ * blank string values.
  *
- * <p>The {@code BlankStringProvider} produces a {@link Stream} of all
- * UTF-8 chars that are allowed in a blank string.
+ * <p>The {@code EmptyOrBlankStringProvider} produces a {@link Stream}
+ * of all UTF-8 chars that are allowed in a blank string.
  *
  * @see ArgumentsSource
  * @see ParameterizedTest
@@ -26,6 +26,6 @@ import java.util.stream.Stream;
 @Documented
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@ArgumentsSource(BlankStringProvider.class)
-public @interface BlankStringSource {
+@ArgumentsSource(EmptyOrBlankStringProvider.class)
+public @interface EmptyOrBlankStringSource {
 }
