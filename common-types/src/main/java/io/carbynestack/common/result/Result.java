@@ -161,6 +161,23 @@ public interface Result<S, F> {
     <N> Result<N, F> map(Function<? super S, ? super N> function);
 
     /**
+     * If the {@code Result} is a {@link Failure}, returns the result of
+     * applying the given mapping function to the {@link Failure#reason()}.
+     * Otherwise, a cast version of the {@link Success} is returned.
+     *
+     * @param function the mapping function to apply to a {@link Failure#reason()}
+     * @param <R>      the failure type of the value returned from the mapping
+     *                 function
+     * @return the {@code Result} of mapping the given function to the value
+     * from this {@link Failure} or this {@link Success}
+     * @throws NullPointerException if the mapping function is {@code null}
+     * @see #map(Function)
+     * @see #recover(Function)
+     * @since 0.2.0
+     */
+    <R> Result<S, R> mapFailure(Function<? super F, ? super R> function);
+
+    /**
      * If the {@code Result} is a {@link Success}, returns the result of
      * applying the given mapping function to the {@link Success#value()}.
      * Otherwise, a cast version of the {@link Failure} is returned.

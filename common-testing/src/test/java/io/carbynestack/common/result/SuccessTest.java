@@ -60,6 +60,17 @@ class SuccessTest {
     }
 
     @Test
+    void mapFailure() {
+        assertThat(result.mapFailure(r -> r * 2)).hasValue(value);
+    }
+
+    @Test
+    void mapFailureNullPointerException() {
+        assertThatThrownBy(() -> result.mapFailure(null))
+              .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    @Test
     void tryMap() {
         assertThat(result.tryMap(v -> v * 2, -11)).hasValue(24);
     }
@@ -68,6 +79,12 @@ class SuccessTest {
     void tryMapNullPointerException() {
         assertThatThrownBy(() -> result.tryMap(null, -11))
                 .isExactlyInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void mapFailureAndTransformType() {
+        assertThat(result.mapFailure(r -> String.format("%s * 2 -> %s", r, r * 2)))
+                .hasValue(value);
     }
 
     @Test

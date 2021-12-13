@@ -78,6 +78,15 @@ class ResultTest {
     }
 
     @Test
+    void mapFailure() {
+        assertThat(new Success<>(12)
+                .mapFailure(Long.TYPE::cast)
+                .flatMap(v -> new Failure<Integer, Long>((long) v * 2))
+                .mapFailure(Long::intValue)
+                .isFailure()).isTrue();
+    }
+
+    @Test
     void tryPeek() {
         assertThat(new Success<>(12)
                 .tryPeek(System.out::println, -1)
