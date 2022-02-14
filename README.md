@@ -7,14 +7,14 @@
 
 This library provides a set of common types and testing utilities for all
 Carbyne Stack services, clients and other components. The content is split into
-two distinct dependencies. Common-types for public API signature types, as well
-as other shared code and common testing utilities which are needed to implement
+two distinct dependencies. **Common-types** for public API signature types, as well
+as other shared code and **common-testing** utilities which are needed to implement
 tests in Carbyne Stack in a desirable manner with JUnit argument sources and
 AssertJ custom assertion.
 
 ## License
 
-Carbyne Stack *Castor Tuple Store* is open-sourced under the Apache License 2.0.
+Carbyne Stack *Common* is open-sourced under the Apache License 2.0.
 See the [LICENSE](LICENSE) file for details.
 
 ### 3rd Party Licenses
