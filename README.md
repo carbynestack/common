@@ -5,12 +5,12 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
 
-This library provides a set of common types and testing utilities for all
-Carbyne Stack services, clients and other components. The content is split into
-two distinct dependencies. **Common-types** for public API signature types, as well
-as other shared code and **common-testing** utilities which are needed to implement
-tests in Carbyne Stack in a desirable manner with JUnit argument sources and
-AssertJ custom assertion.
+This library provides a set of shared types and testing utilities for all 
+Carbyne Stack services, clients, and other components. The content is split into 
+two distinct dependencies. **Common-types** for public API signatures, as well as 
+other shared code and **common-testing** for utilities which are needed to implement 
+tests in Carbyne Stack in a desirable manner with JUnit argument sources and AssertJ 
+custom assertions.
 
 ## License
 
