@@ -13,6 +13,6 @@ file in the Carbyne Stack
 
 - Greven David <fixed-term.David.Greven@de.bosch.com>
 
-### Unassociated
+### Non-Affiliated
 
 - Greven David <opensource@grevend.dev>
