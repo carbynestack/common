@@ -12,3 +12,7 @@ file in the Carbyne Stack
 ### Robert Bosch GmbH
 
 - Greven David <fixed-term.David.Greven@de.bosch.com>
+
+### Unassociated
+
+- Greven David <opensource@grevend.dev>
