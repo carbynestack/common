@@ -5,7 +5,14 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 name: Artifacts
-on: push
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - 'master'
 jobs:
   verification:
     runs-on: ubuntu-20.04
