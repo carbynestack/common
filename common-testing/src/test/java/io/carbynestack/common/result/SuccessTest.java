@@ -30,7 +30,7 @@ class SuccessTest {
     private final Result<Integer, Integer> result = new Success<>(value);
 
     @Test
-    void isSuccess() {
+    void givenSuccessResultWhenCallingIsSuccessOnResultThenReturnTrue() {
         assertThat(result).isInstanceOf(Result.class);
         assertThat(result.isSuccess()).isTrue();
         assertThat(result).isSuccess();
@@ -38,63 +38,63 @@ class SuccessTest {
     }
 
     @Test
-    void value() {
+    void givenSuccessResultWhenCallingValueOnResultThenReturnExpectedValue() {
         assertThat(result).hasValue(value);
     }
 
     @Test
-    void map() {
+    void givenSuccessResultWhenCallingMapOnResultThenReturnMappedResult() {
         assertThat(result.map(v -> v * 2)).hasValue(24);
     }
 
     @Test
-    void mapNullPointerException() {
+    void givenMappingFunctionIsNullWhenCallingMapOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.map(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void mapAndTransformType() {
+    void givenSuccessResultWhenCallingMapOnResultThenReturnMappedResultWithTransformedType() {
         assertThat(result.map(v -> String.format("%s * 2 -> %s", v, v * 2)))
                 .hasValue("12 * 2 -> 24");
     }
 
     @Test
-    void mapFailure() {
+    void givenSuccessResultWhenCallingMapFailureOnResultThenReturnResultWithMappedFailureReason() {
         assertThat(result.mapFailure(r -> r * 2)).hasValue(value);
     }
 
     @Test
-    void mapFailureNullPointerException() {
+    void givenMappingFunctionIsNullWhenCallingMapFailureOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.mapFailure(null))
               .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void tryMap() {
+    void givenSuccessResultWhenCallingTryMapOnResultThenReturnMappedResult() {
         assertThat(result.tryMap(v -> v * 2, -11)).hasValue(24);
     }
 
     @Test
-    void tryMapNullPointerException() {
+    void givenMappingFunctionsIsNullWhenCallingTryMapOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.tryMap(null, -11))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void mapFailureAndTransformType() {
+    void givenSuccessResultWhenCallingMapFailureOnResultThenReturnResultWithMappedFailureReasonAndTransformedType() {
         assertThat(result.mapFailure(r -> String.format("%s * 2 -> %s", r, r * 2)))
                 .hasValue(value);
     }
 
     @Test
-    void tryMapAndTransformType() {
+    void givenSuccessResultWhenCallingTryMapOnResultThenReturnMappedResultAndTransformedType() {
         assertThat(result.tryMap(v -> String.format("%s * 2 -> %s", v, v * 2),
                 -11)).hasValue("12 * 2 -> 24");
     }
 
     @Test
-    void tryMapWithException() {
+    void givenThrowingMappingFunctionWhenCallingTryMapOnResultThenReturnFailureResult() {
         int reason = -11;
         assertThat(result.tryMap(v -> {
             throw new IOException("-11");
@@ -102,27 +102,27 @@ class SuccessTest {
     }
 
     @Test
-    void peek() {
+    void givenSuccessResultWhenCallingPeekOnResultThenOutputSuccessValue() {
         AtomicInteger output = new AtomicInteger(-1);
         result.peek(output::set);
         assertThat(output).hasValue(value);
     }
 
     @Test
-    void peekNullPointerException() {
+    void givenOutputFunctionIsNullWhenCallingPeekOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.peek(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void tryPeek() {
+    void givenSuccessResultWhenCallingTryPeekOnResultThenOutputSuccessValue() {
         AtomicInteger output = new AtomicInteger(-1);
         result.tryPeek(output::set, -11);
         assertThat(output).hasValue(value);
     }
 
     @Test
-    void tryPeekWithException() {
+    void givenThrowingOutputFunctionWhenCallingTryPeekOnResultThenReturnFailureResult() {
         int reason = -11;
         assertThat(result.tryPeek(v -> {
             throw new IOException("-11");
@@ -130,30 +130,30 @@ class SuccessTest {
     }
 
     @Test
-    void tryPeekNullPointerException() {
+    void givenOutputFunctionIsNullWhenCallingTryPeekOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.tryPeek(null, -11))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void recover() {
+    void givenSuccessResultWhenCallingRecoverOnResultThenReturnCurrentResult() {
         assertThat(result.recover(identity())).hasValue(value);
     }
 
     @Test
-    void recoverNullPointerException() {
+    void givenRecoveryFunctionIsNullWhenCallingRecoverOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.recover(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void flatMap() {
+    void givenSuccessResultWhenCallingFlatMapOnResultThenReturnMappedResult() {
         assertThat(result.flatMap(v -> new Success<>(v * 2))).hasValue(24);
         assertThat(result.flatMap(v -> new Failure<>(v + 9))).hasReason(21);
     }
 
     @Test
-    void flatMapNullPointerException() {
+    void givenMappingFunctionWhenCallingFlatMapOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.flatMap(null))
                 .isExactlyInstanceOf(NullPointerException.class);
         assertThatThrownBy(() -> result.flatMap(v -> null))
@@ -161,74 +161,75 @@ class SuccessTest {
     }
 
     @Test
-    void unsafeFlattenNestedSuccess() {
+    void givenOutermostNestedSuccessResultWhenCallingUnsafeFlattenOnResultThenReturnFlattenedResult() {
         int value = 12;
         Result<Result<Integer, Integer>, Integer> res = new Success<>(new Success<>(value));
         assertThat(res.unsafeFlatten()).hasValue(value);
     }
 
     @Test
-    void unsafeFlattenFailureNestedInSuccess() {
+    void givenOutermostSuccessResultWithNestedFailureResultWhenCallingUnsafeFlattenOnResultThenReturnFlattenedResult() {
         int reason = 21;
         Result<Result<Integer, Integer>, Integer> res = new Success<>(new Failure<>(reason));
         assertThat(res.unsafeFlatten()).hasReason(reason);
     }
 
     @Test
-    void unsafeFlattenNonNestedSuccess() {
+    void givenNonNestedSuccessResultWhenCallingUnsafeFlattenOnResultThenReturnNonNestedSuccessResult() {
         int value = 12;
         Result<Integer, Integer> res = new Success<>(value);
         assertThat(res.unsafeFlatten()).hasValue(value);
     }
 
     @Test
-    void fold() {
+    void givenSuccessResultWhenCallingFoldOnResultThenReturnExpectedValue() {
         assertThat(result.<Integer>fold(v -> v * 2, r -> r + 9)).isEqualTo(24);
     }
 
     @ParameterizedTest
     @NullableParamSource("FOLD")
-    void foldNullPointerException(Function<? super Integer, ? super Integer> successFunction,
-                                  Function<? super Integer, ? super Integer> failureFunction) {
+    void givenFoldingFunctionsAreNullWhenCallingFoldOnResultThenThrowNullPointerException(
+            Function<? super Integer, ? super Integer> successFunction,
+            Function<? super Integer, ? super Integer> failureFunction) {
         assertThatThrownBy(() -> result.fold(successFunction, failureFunction))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void filter() {
+    void givenSuccessResultWhenCallingFilterOnResultThenReturnFilteredResult() {
         assertThat(result.filter(Predicate.isEqual(value), 21)).hasValue(value);
         assertThat(result.filter(v -> !Objects.equals(v, value), 21)).hasReason(21);
     }
 
     @Test
-    void filterNullPointerException() {
+    void givenPredicateIsNullWhenCallingFilterOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.filter(null, null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void or() {
+    void givenSuccessResultWhenCallingOrOnResultThenReturnCurrentSuccessResult() {
         assertThat(result.or(() -> new Success<>(24))).hasValue(value);
     }
 
     @Test
-    void orNullPointerException() {
+    void givenResultSupplierIsNullWhenCallingOrOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> result.or(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void swap() {
+    void givenSuccessResultWhenCallingSwapOnResultThenReturnFailureResult() {
         assertThat(result.swap()).hasReason(value);
     }
 
     @Test
-    void toOptional() {
+    void givenSuccessResultWhenCallingToOptionalOnResultThenReturnOptionalWithSuccessValue() {
         assertThat(result.toOptional()).hasValue(value);
     }
 
     @Test
-    void stream() {
+    void givenSuccessResultWhenCallingStreamOnResultThenReturnStreamContainingSuccessValue() {
         assertThat(result.stream()).containsExactly(value);
     }
 }

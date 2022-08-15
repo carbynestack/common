@@ -12,7 +12,7 @@ import static io.carbynestack.testing.result.ResultAssert.assertThat;
 
 class CsFailureReasonTest {
     @Test
-    void toFailure() {
+    void whenCallingToFailureOnCsFailureReasonThenReturnReasonWrappedInFailureInstance() {
         assertThat(new TestReason().toFailure()).isFailure();
     }
 

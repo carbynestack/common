@@ -24,7 +24,7 @@ class ResultAssertTest {
     private final Result<Integer, Integer> failure = new Failure<>(reason);
 
     @Test
-    void isSuccess() {
+    void givenSuccessAndFailureResultsWhenCallingIsSuccessOnResultAssertThenVerifyAssertion() {
         assertThat(success).isSuccess();
         assertThatThrownBy(() -> assertThat(failure).isSuccess())
                 .isExactlyInstanceOf(AssertionError.class)
@@ -32,7 +32,7 @@ class ResultAssertTest {
     }
 
     @Test
-    void isFailure() {
+    void givenSuccessAndFailureResultsWhenCallingIsFailureOnResultAssertThenVerifyAssertion() {
         assertThat(failure).isFailure();
         assertThatThrownBy(() -> assertThat(success).isFailure())
                 .isExactlyInstanceOf(AssertionError.class)
@@ -40,7 +40,7 @@ class ResultAssertTest {
     }
 
     @Test
-    void hasValue() {
+    void givenSuccessAndFailureResultsWhenCallingHasValueOnResultAssertThenVerifyAssertion() {
         assertThat(success).hasValue(value);
         assertThatThrownBy(() -> assertThat(failure).hasValue(value))
                 .isExactlyInstanceOf(AssertionError.class)
@@ -51,28 +51,28 @@ class ResultAssertTest {
     }
 
     @Test
-    void hasStringValue() {
+    void givenSuccessAndFailureResultsWhenCallingHasStringValueOnResultAssertThenVerifyAssertion() {
         assertThatThrownBy(() -> assertThat(new Success<>(some)).hasValue(none))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result success value to equal '%s' but was: '%s'", none, some);
     }
 
     @Test
-    void hasStringValueWithSingleQuotes() {
+    void givenSuccessAndFailureResultsWhenCallingHasStringValueWithSingleQuotesOnResultAssertThenVerifyAssertion() {
         assertThatThrownBy(() -> assertThat(new Success<>("'first'")).hasValue("second"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result success value to equal 'second' but was: '%s'", "'first'");
     }
 
     @Test
-    void hasStringValueWithLineBreaks() {
+    void givenSuccessAndFailureResultsWhenCallingHasStringValueWithLineBreaksOnResultAssertThenVerifyAssertion() {
         assertThatThrownBy(() -> assertThat(new Success<>("first\nsecond")).hasValue("third"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result success value to equal 'third' but was: '%s'", "first\\nsecond");
     }
 
     @Test
-    void hasReason() {
+    void givenSuccessAndFailureResultsWhenCallingHasReasonOnResultAssertThenVerifyAssertion() {
         assertThat(failure).hasReason(reason);
         assertThatThrownBy(() -> assertThat(success).hasReason(reason))
                 .isExactlyInstanceOf(AssertionError.class)
@@ -83,21 +83,21 @@ class ResultAssertTest {
     }
 
     @Test
-    void hasStringReason() {
+    void givenSuccessAndFailureResultsWhenCallingHasStringReasonOnResultAssertThenVerifyAssertion() {
         assertThatThrownBy(() -> assertThat(new Failure<>(some)).hasReason(none))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result failure reason to equal '%s' but was: '%s'", none, some);
     }
 
     @Test
-    void hasStringReasonWithSingleQuotes() {
+    void givenSuccessAndFailureResultsWhenCallingHasStringReasonWithSingleQuotesOnResultAssertThenVerifyAssertion() {
         assertThatThrownBy(() -> assertThat(new Failure<>("'first'")).hasReason("second"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result failure reason to equal 'second' but was: '%s'", "'first'");
     }
 
     @Test
-    void hasStringReasonWithLineBreaks() {
+    void givenSuccessAndFailureResultsWhenCallingHasStringReasonWithLineBreaksOnResultAssertThenVerifyAssertion() {
         assertThatThrownBy(() -> assertThat(new Failure<>("first\nsecond")).hasReason("third"))
                 .isExactlyInstanceOf(AssertionFailedError.class)
                 .hasMessage("Expecting result failure reason to equal 'third' but was: '%s'", "first\\nsecond");

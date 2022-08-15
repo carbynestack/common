@@ -15,21 +15,21 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ThrowingSupplierTest {
     @Test
-    void get() {
+    void givenNonThrowingComputationWhenCallingGetOnThrowingSupplierThenSuccessfullyExecuteComputation() {
         var value = 12;
         ThrowingSupplier<Integer, RuntimeException> supplier = () -> value;
         assertThat(supplier.get()).isEqualTo(value);
     }
 
     @Test
-    void getCheckedException() throws IOException {
+    void givenNonThrowingComputationWithCheckedExceptionWhenCallingGetOnThrowingSupplierThenSuccessfullyExecuteComputation() throws IOException {
         var value = 12;
         ThrowingSupplier<Integer, IOException> supplier = () -> value;
         assertThat(supplier.get()).isEqualTo(value);
     }
 
     @Test
-    void getThrowsException() {
+    void givenIOExceptionThrowingComputationWhenCallingGetOnThrowingSupplierThenThrowIOException() {
         ThrowingSupplier<Integer, IOException> supplier = () -> {
             throw new IOException();
         };

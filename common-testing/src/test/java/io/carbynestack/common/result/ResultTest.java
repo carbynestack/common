@@ -29,14 +29,14 @@ class ResultTest {
             () -> 12, Collections.emptyMap());
 
     @Test
-    void of() {
+    void givenSuccessValueWhenCallingOfOnResultThenReturnSuccessResult() {
         int value = 12;
         Result<Integer, String> result = Result.of(() -> value, "some");
         assertThat(result).hasValue(value);
     }
 
     @Test
-    void ofThrowsToFailure() {
+    void givenThrowingValueSupplierWhenCallingOfOnResultThenReturnFailureResult() {
         String reason = "some";
         Result<Integer, String> result = Result.of(() -> {
             throw new IOException();
@@ -46,20 +46,21 @@ class ResultTest {
 
     @ParameterizedTest
     @NullableParamSource("OF")
-    void ofNullPointerException(AnyThrowingSupplier<Integer> supplier, String reason) {
+    void givenValueSuppliersAndReasonsAreNullWhenCallingOfOnResultThenThrowNullPointerException(
+            AnyThrowingSupplier<Integer> supplier, String reason) {
         assertThatThrownBy(() -> Result.of(supplier, reason))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void ofWithCsFailureReason() {
+    void givenFailureReasonTypeWhenCallingOfOnResultThenReturnSuccessResult() {
         int value = 12;
         Result<Integer, ? extends Throwable> result = Result.of(() -> value);
         assertThat(result).hasValue(value);
     }
 
     @Test
-    void ofWithCsFailureReasonToFailure() {
+    void givenThrowingValueSupplierWithFailureReasonTypeWhenCallingOfOnResultThenReturnFailureResult() {
         FailureException reason = new FailureException();
         Result<Object, FailureException> result = Result.of(() -> {
             throw reason;
@@ -68,13 +69,13 @@ class ResultTest {
     }
 
     @Test
-    void ofWithCsFailureReasonNullPointerException() {
+    void givenValueSupplierIsNullWhenCallingOfOnResultThenThrowNullPointerException() {
         assertThatThrownBy(() -> Result.of(null))
                 .isExactlyInstanceOf(NullPointerException.class);
     }
 
     @Test
-    void ofWithMappedExceptions() {
+    void givenEmptyExceptionMappingWhenCallingOfOnResultThenReturnSuccessResult() {
         int value = 12;
         Result<Integer, FailureException> result = Result.of(() -> value, Collections.emptyMap(),
                 new FailureException());
@@ -82,7 +83,7 @@ class ResultTest {
     }
 
     @Test
-    void ofWithNoMappedExceptions() {
+    void givenThrowingValueSupplierAndEmptyExceptionMappingWhenCallingOfOnResultThenReturnFailureResult() {
         FailureException exception = new FailureException();
         Result<Integer, FailureException> result = Result.of(() -> {
             throw new IOException();
@@ -91,7 +92,7 @@ class ResultTest {
     }
 
     @Test
-    void ofWithMappedExactExceptionToFailure() {
+    void givenThrowingValueSupplierAndExactExceptionMappingWhenCallingOfOnResultThenReturnMappedFailureResult() {
         FailureException reason = new FailureException("IO", "IOException");
         Map<Class<? extends Throwable>, FailureException> reasons = new HashMap<>();
         reasons.put(IOException.class, reason);
@@ -102,7 +103,7 @@ class ResultTest {
     }
 
     @Test
-    void ofWithMappedCauseExceptionToFailure() {
+    void givenThrowingValueSupplierAndCauseExceptionMappingWhenCallingOfOnResultThenReturnMappedFailureResult() {
         FailureException reason = new FailureException("IO", "IOException");
         Map<Class<? extends Throwable>, FailureException> reasons = new HashMap<>();
         reasons.put(IllegalArgumentException.class, reason);
@@ -113,7 +114,7 @@ class ResultTest {
     }
 
     @Test
-    void ofWithMappedAssignableExceptionToFailure() {
+    void givenThrowingValueSupplierAndAssignableExceptionMappingWhenCallingOfOnResultThenReturnMappedFailureResult() {
         FailureException reason = new FailureException("IO", "IOException");
         Map<Class<? extends Throwable>, FailureException> reasons = new HashMap<>();
         reasons.put(Throwable.class, reason);
@@ -124,7 +125,7 @@ class ResultTest {
     }
 
     @Test
-    void ofWithMappedExceptionsMissingEntry() {
+    void givenThrowingValueSupplierAndMissingExceptionMappingEntryWhenCallingOfOnResultThenReturnMappedFailureResult() {
         FailureException exception = new FailureException();
         Map<Class<? extends Throwable>, FailureException> reasons = new HashMap<>();
         reasons.put(NumberFormatException.class, new FailureException("IO", "IOException"));
@@ -136,7 +137,8 @@ class ResultTest {
 
     @ParameterizedTest
     @NullableParamSource("OF_WITH_MAPPED_EXCEPTIONS")
-    void ofWithMappedExceptionsNullPointerException(AnyThrowingSupplier<Integer> supplier, Map<Class<? extends Throwable>, FailureException> reasons) {
+    void givenValueSuppliersAndExceptionMappingsAreNullWhenCallingOfOnResultThenThrowNullPointerException(
+            AnyThrowingSupplier<Integer> supplier, Map<Class<? extends Throwable>, FailureException> reasons) {
         assertThatThrownBy(() -> Result.of(supplier, reasons, new FailureException()));
     }
 
