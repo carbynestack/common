@@ -12,17 +12,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CsFailureThrowableTest {
     @Test
-    void throwableSynopsis() {
+    void whenCallingSynopsisOnCsFailureThrowableThenReturnExpectedSynopsis() {
         assertThat(new SomeThrowable().synopsis()).isEqualTo("Some message.");
     }
 
     @Test
-    void nonThrowableSynopsis() {
+    void givenNonThrowableWhenCallingSynopsisOnCsFailureThrowableThenReturnExpectedSynopsis() {
         assertThat(new NonThrowable().synopsis()).isEqualTo("Throwable NonThrowable[] has been caught.");
     }
 
     @Test
-    void throwableStackTrace() {
+    void whenCallingStackTraceOnCsFailureThrowableThenReturnThrowableStackTrace() {
         try {
             throw new SomeThrowable();
         } catch (SomeThrowable throwable) {
@@ -31,7 +31,7 @@ class CsFailureThrowableTest {
     }
 
     @Test
-    void nonThrowableStackTrace() {
+    void givenNonThrowableWhenCallingStackTraceOnCsFailureThrowableThenReturnEmptyStackTraceOptional() {
         assertThat(new NonThrowable().stackTrace()).isEmpty();
     }
 

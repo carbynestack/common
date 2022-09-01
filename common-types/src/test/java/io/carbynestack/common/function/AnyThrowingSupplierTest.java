@@ -15,14 +15,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnyThrowingSupplierTest {
     @Test
-    void get() throws Throwable {
+    void givenNonThrowingComputationWhenCallingGetOnAnyThrowingSupplierThenSuccessfullyExecuteComputation() throws Throwable {
         var value = 12;
         AnyThrowingSupplier<Integer> supplier = () -> value;
         assertThat(supplier.get()).isEqualTo(value);
     }
 
     @Test
-    void getThrowsException() {
+    void givenIOExceptionThrowingComputationWhenCallingGetOnAnyThrowingSupplierThenThrowIOException() {
         AnyThrowingSupplier<Integer> supplier = () -> {
             throw new IOException();
         };

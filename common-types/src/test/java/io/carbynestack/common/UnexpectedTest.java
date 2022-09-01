@@ -22,22 +22,22 @@ class UnexpectedTest {
     }
 
     @Test
-    void synopsis() {
+    void givenUnexpectedWithThrowableWhenCallingSynopsisOnUnexpectedThenReturnExpectedSynopsis() {
         assertThat(unknown.synopsis()).isEqualTo("An unknown exception has occurred.");
     }
 
     @Test
-    void description() {
+    void givenUnexpectedWithThrowableWhenCallingDescriptionOnUnexpectedThenReturnExpectedDescription() {
         assertThat(unknown.description()).isEqualTo("test");
     }
 
     @Test
-    void stackTrace() {
+    void givenUnexpectedWithThrowableWhenCallingStackTraceOnUnexpectedThenReturnExpectedStackTrace() {
         assertThat(unknown.stackTrace()).isNotEmpty();
     }
 
     @Test
-    void reportIssue() {
+    void givenUnexpectedWithThrowableWhenCallingReportIssueOnUnexpectedThenReturnExpectedReportIssue() {
         assertThat(unknown.reportIssue()).isTrue();
     }
 }

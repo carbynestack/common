@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AnyThrowingConsumerTest {
     @Test
-    void accept() throws Throwable {
+    void givenNonThrowingComputationWhenCallingAcceptOnAnyThrowingConsumerThenSuccessfullyExecuteComputation() throws Throwable {
         var value = 12;
         var output = new AtomicInteger(-1);
         AnyThrowingConsumer<Integer> consumer = output::set;
@@ -25,7 +25,7 @@ class AnyThrowingConsumerTest {
     }
 
     @Test
-    void acceptThrowsException() {
+    void givenIOExceptionThrowingComputationWhenCallingAcceptOnAnyThrowingConsumerThenThrowIOException() {
         AnyThrowingConsumer<Integer> consumer = v -> {
             throw new IOException();
         };

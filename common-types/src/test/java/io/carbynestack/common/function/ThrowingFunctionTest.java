@@ -15,21 +15,21 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ThrowingFunctionTest {
     @Test
-    void apply() {
+    void givenNonThrowingIdentityFunctionWhenCallingApplyOnThrowingFunctionThenReturnExpectedComputationResult() {
         var value = 12;
         ThrowingFunction<Integer, Integer, RuntimeException> function = v -> v;
         assertThat(function.apply(value)).isEqualTo(value);
     }
 
     @Test
-    void applyCheckedException() throws IOException {
+    void givenNonThrowingIdentityFunctionWithCheckedExceptionWhenCallingApplyOnThrowingFunctionThenReturnExpectedComputationResult() throws IOException {
         var value = 12;
         ThrowingFunction<Integer, Integer, IOException> function = v -> v;
         assertThat(function.apply(value)).isEqualTo(value);
     }
 
     @Test
-    void applyThrowsException() {
+    void givenIOExceptionThrowingComputationWhenCallingApplyOnThrowingFunctionThenThrowIOException() {
         ThrowingFunction<Integer, Integer, IOException> function = v -> {
             throw new IOException();
         };

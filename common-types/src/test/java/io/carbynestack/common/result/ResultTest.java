@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ResultTest {
     @Test
-    void success() {
+    void givenFailureResultWhenApplyingTransformationsInSequenceUsingMapAndRecoverAndFlatMapAndFilterAndOrThenExpectSuccessResult() {
         var value = 12;
         var other = new Success<Integer, Integer>(value);
 
@@ -45,7 +45,7 @@ class ResultTest {
     }
 
     @Test
-    void failure() {
+    void givenSuccessResultWhenApplyingTransformationsInSequenceUsingMapAndRecoverAndFlatMapAndFilterAndOrThenExpectFailureResult() {
         var res = Result.of(() -> 21, 21)
                 .map(v -> v * 2)
                 .peek(System.out::println)
@@ -64,7 +64,7 @@ class ResultTest {
     }
 
     @Test
-    void result() {
+    void givenFailureResultWhenApplyingTransformationsInSequenceUsingFlatMapAndRecoverAndFilterThenExpectFailureResult() {
         var res = new Failure<Integer, Integer>(21)
                 .flatMap(Success::new)
                 .recover(r -> r)
@@ -78,7 +78,7 @@ class ResultTest {
     }
 
     @Test
-    void mapFailure() {
+    void givenSuccessResultWhenApplyingTransformationsInSequenceUsingMapFailureAndFlatMapThenExpectFailureResult() {
         assertThat(new Success<>(12)
                 .mapFailure(Long.TYPE::cast)
                 .flatMap(v -> new Failure<Integer, Long>((long) v * 2))
@@ -87,7 +87,7 @@ class ResultTest {
     }
 
     @Test
-    void tryPeek() {
+    void givenSuccessResultWhenApplyingTransformationsInSequenceUsingTryPeekThenExpectFailureResult() {
         assertThat(new Success<>(12)
                 .tryPeek(System.out::println, -1)
                 .tryPeek(v -> {
@@ -98,7 +98,7 @@ class ResultTest {
     }
 
     @Test
-    void tryMap() {
+    void givenSuccessResultWhenApplyingTransformationsInSequenceUsingTryMapThenExpectFailureResult() {
         assertThat(new Success<>(12)
                 .tryMap(v -> v * 2, -11)
                 .<Integer>tryMap(v -> {
@@ -109,7 +109,7 @@ class ResultTest {
     }
 
     @Test
-    void of() {
+    void givenSuccessValuesAndFailureReasonsWhenCallingOfOnResultThenReturnExpectedResult() {
         var value = 12;
         FailureException reason = new FailureException();
         assertThat(Result.of(() -> value).isSuccess()).isTrue();
@@ -132,7 +132,7 @@ class ResultTest {
     }
   
     @Test
-    void unsafeFlatten() {
+    void givenOutermostNestedResultInstanceWhenCallingUnsafeFlattenOnResultThenReturnFlattenedResult() {
         var value = 12;
         var reason = 21;
 
@@ -152,7 +152,7 @@ class ResultTest {
     }
 
     @Test
-    void swap() {
+    void whenCallingSwapOnResultThenReturnOppositeResultInstance() {
         var value = 12;
         var res = new Success<Integer, Integer>(value);
 

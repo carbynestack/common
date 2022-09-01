@@ -16,22 +16,22 @@ class CsFailureReasonTest {
     private final CsFailureReason reason = new TestReason(SYNOPSIS);
 
     @Test
-    void description() {
+    void whenCallingDescriptionOnCsFailureReasonThenReturnExpectedDescription() {
         assertThat(reason.description()).isEqualTo(SYNOPSIS);
     }
 
     @Test
-    void stackTrace() {
+    void whenCallingStackTraceOnCsFailureReasonThenReturnExpectedStackTrace() {
         assertThat(reason.stackTrace()).isEmpty();
     }
 
     @Test
-    void reportIssue() {
+    void whenCallingReportIssueOnCsFailureReasonThenReturnExpectedReportIssue() {
         assertThat(reason.reportIssue()).isFalse();
     }
 
     @Test
-    void toFailure() {
+    void whenCallingToFailureOnCsFailureReasonThenReturnReasonWrappedInFailureInstance() {
         assertThat(new TestReason("synopsis").toFailure()).isExactlyInstanceOf(Failure.class);
     }
 

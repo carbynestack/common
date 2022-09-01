@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BlankStringTest {
     @ParameterizedTest
     @EmptyOrBlankStringSource
-    void verify(String blank) {
+    void givenEmptyOrBlankStringWhenCallingIsBlankOnStringArgumentThenVerifyStringProperty(String blank) {
         assertThat(blank).isBlank();
     }
 }
