@@ -6,7 +6,7 @@
 #
 repos:
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.7
+    rev: 0.7.22
     hooks:
       - id: mdformat
         exclude: ^common-testing/3RD-PARTY-LICENSES/
@@ -16,7 +16,7 @@ repos:
         additional_dependencies:
           - mdformat-gfm
   - repo: https://github.com/igorshubovych/markdownlint-cli
-    rev: v0.27.1
+    rev: v0.44.0
     hooks:
       - id: markdownlint
         exclude: ^common-testing/3RD-PARTY-LICENSES/
